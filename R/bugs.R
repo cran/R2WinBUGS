@@ -1,8 +1,9 @@
 "bugs" <-
 function(data, inits, parameters.to.save, model.file = "model.txt",
     n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter / 2),
-    n.thin = max(1, floor(n.chains * (n.iter - n.burnin) / 1000)), debug = FALSE,
-    DIC = TRUE, digits = 5, codaPkg = FALSE, 
+    n.thin = max(1, floor(n.chains * (n.iter - n.burnin) / 1000)), 
+    bin = (n.iter - n.burnin) / n.thin,
+    debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE, 
     bugs.directory = "c:/Program Files/WinBUGS14/", working.directory = NULL){
 
   # Checking number of inits, which is NOT save here:
@@ -14,6 +15,7 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
       on.exit(setwd(savedWD))
   }
   if(!file.exists(model.file)) stop(paste(model.file, "does not exist."))
+  if(file.info(model.file)$isdir) stop(paste(model.file, "is a directory, but a file is required."))  
   if(!(length(data) == 1 && is.vector(data) && is.character(data) && data == "data.txt"))
     bugs.data(data, dir = getwd(), digits)  
   else if(!file.exists(data))
@@ -28,7 +30,7 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
   }
   else new.model.file <- model.file
   bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
-    bugs.directory, new.model.file, debug=debug, is.inits=!is.null(inits))
+    bugs.directory, new.model.file, debug=debug, is.inits=!is.null(inits), bin = bin)
   bugs.run(n.burnin, bugs.directory)
   if(codaPkg){
     for(i in 1:n.chains){

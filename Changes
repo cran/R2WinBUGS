@@ -13,3 +13,12 @@ Update 0.2-3 (10 Sept 2004):
 - bugs.data.inits split to bugs.inits and bugs.data, the latter exported
   from the Namespace.
   Now we can use already written data files in bugs(). 
+
+Update 0.2-4 (05 Oct 2004):
+- bugs.script() did not work for large n.iter values in update step 
+  (no scientific notation allowed)
+
+Update 0.2-5 (20 Oct 2004):
+- bugs() and bugs.script() have a new argument bin that allows to specify
+  a number of iterations. After each "bin" iterations the coda files are saved.
+

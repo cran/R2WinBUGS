@@ -8,6 +8,7 @@ and saves the simulations for easy access in R.}
 bugs(data, inits, parameters.to.save, model.file = "model.txt",
     n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
     n.thin = max(1, floor(n.chains * (n.iter - n.burnin)/1000)),
+    bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE,
     bugs.directory = "c:/Program Files/WinBUGS14/",
     working.directory = NULL)
@@ -36,6 +37,9 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
    Set \code{n.thin} > 1 to save memory and computation time if \code{n.iter} is large.
    Default is \code{max(1, floor(n.chains * (n.iter-n.burnin) / 1000))}
    which will only thin if there are at least 2000 simulations.}
+  \item{bin}{number of iterations between saving of results 
+    (i.e. the coda files are saved after each \code{bin} iterations); 
+    default is to save only at the end.}
   \item{debug}{if \code{FALSE} (default), WinBUGS is closed automatically
   when the script has finished running, otherwise WinBUGS remains open for further investigation}
   \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD, and DIC}
@@ -98,8 +102,15 @@ To run:
     which gives a more reasonable estimate when convergence has not been reached)}
   \item{DIC}{\code{mean(deviance) + pD}}
 }
-\references{Gelman, A., Carlin, J.B., Stern, H.S., Rubin, D.B. (2003):
-    \emph{Bayesian Data Analysis}, 2nd edition, CRC Press.}
+\references{
+    Gelman, A., Carlin, J.B., Stern, H.S., Rubin, D.B. (2003):
+    \emph{Bayesian Data Analysis}, 2nd edition, CRC Press.
+
+     Sturtz, S., Ligges, U., Gelman, A. (2005): 
+     R2WinBUGS: A Package for Running WinBUGS from R.  
+     \emph{Journal of Statistical Software} 12(3), 1-16.
+}
+    
 \author{Andrew Gelman, \email{gelman@stat.columbia.edu}, \url{http:/www.stat.columbia.edu/~gelman/bugsR/};
     modifications and packaged by Sibylle Sturtz, \email{sturtz@statistik.uni-dortmund.de}, and Uwe Ligges.}
 \seealso{\code{\link{print.bugs}}, \code{\link{plot.bugs}}, and the \pkg{coda} package}
