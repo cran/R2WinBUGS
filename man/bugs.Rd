@@ -13,7 +13,8 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
     working.directory = NULL)
 }
 \arguments{
-  \item{data}{list of the data for the WinBUGS model, \emph{or}
+  \item{data}{either a named list (names corresponding to variable names in the \code{model.file}) 
+    of the data for the WinBUGS model, \emph{or}
     a vector or list of the names of the data objects used by the model}
   \item{inits}{a list with \code{n.chains} elements; each element of the list is
     itself a list of starting values for the WinBUGS model, \emph{or}
