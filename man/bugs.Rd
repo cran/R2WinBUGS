@@ -15,7 +15,9 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
 \arguments{
   \item{data}{either a named list (names corresponding to variable names in the \code{model.file}) 
     of the data for the WinBUGS model, \emph{or}
-    a vector or list of the names of the data objects used by the model}
+    a vector or list of the names of the data objects used by the model.
+    If \code{data = "data.txt"}, it is assumed that data have already been written to the working directory
+    in a file called \file{data.txt}, e.g. by the function \code{\link{bugs.data}}.}
   \item{inits}{a list with \code{n.chains} elements; each element of the list is
     itself a list of starting values for the WinBUGS model, \emph{or}
     a function creating (possibly random) initial values.

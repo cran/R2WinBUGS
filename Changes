@@ -8,3 +8,8 @@ documented anywhere ...
 
 Update 0.2-2 (28 Apr 2004):
 - schools data: original (see references) instead of the rounded data
+
+Update 0.2-3 (10 Sept 2004):
+- bugs.data.inits split to bugs.inits and bugs.data, the latter exported
+  from the Namespace.
+  Now we can use already written data files in bugs(). 
