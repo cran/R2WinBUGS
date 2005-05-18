@@ -45,7 +45,8 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
   \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD, and DIC}
   \item{digits}{number of significant digits used for WinBUGS input, see \code{\link{formatC}}}
   \item{codaPkg}{logical; if \code{FALSE} (default) a \code{bugs} object is returned,
-    if \code{TRUE} file names of WinBUGS output are returned for easy access by the \pkg{coda} package.}
+    if \code{TRUE} file names of WinBUGS output are returned for easy access by the \pkg{coda} package
+    through function \code{\link{read.bugs}}.}
   \item{bugs.directory}{directory that contains the WinBUGS executable}
   \item{working.directory}{sets working directory during execution of this function;
     WinBUGS' in- and output will be stored in this directory;
@@ -65,9 +66,9 @@ To run:
 }}
 \value{
  If \code{codaPkg = TRUE} the returned values are the names
- (without file extension) of files written by WinBUGS containing
- the Markov Chain Monte Carlo output in the CODA format and corresponding index files.
- This is useful for direct access with \code{\link[coda]{read.bugs}} from package \sQuote{coda}.
+ of coda output files written by WinBUGS containing
+ the Markov Chain Monte Carlo output in the CODA format.
+ This is useful for direct access with \code{\link{read.bugs}}.
 
  If \code{codaPkg = FALSE}, the following values are returned:
   \item{n.chains}{see Section \sQuote{Arguments}}
@@ -116,7 +117,7 @@ To run:
 \seealso{\code{\link{print.bugs}}, \code{\link{plot.bugs}}, and the \pkg{coda} package}
 \examples{
 # An example model file is given in:
-model.file <- file.path(.path.package("R2WinBUGS"), "model", "schools.txt")
+model.file <- system.file(package = "R2WinBUGS", "model", "schools.txt")
 # Let's take a look:
 file.show(model.file)
 

@@ -33,11 +33,7 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
     bugs.directory, new.model.file, debug=debug, is.inits=!is.null(inits), bin = bin)
   bugs.run(n.burnin, bugs.directory)
   if(codaPkg){
-    for(i in 1:n.chains){
-        file.rename(paste("coda", i, ".txt", sep=""), paste("coda", i, ".out", sep=""))
-        file.copy("codaIndex.txt", paste("coda", i, ".ind", sep=""), overwrite = TRUE)
-    }
-    return(file.path(getwd(), paste("coda", 1:n.chains, sep="")))
+    return(file.path(getwd(), paste("coda", 1:n.chains, ".txt", sep="")))
   }
   else{
     sims <- c(bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC), 

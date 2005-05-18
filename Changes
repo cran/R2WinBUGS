@@ -1,8 +1,8 @@
 Changes to R2WinBUGS:
 =====================
 
-During the process of packaging R2WinBUGS_0.1 - R2WinBUGS_0.2-1, 
-quite a lot of changes had been made. Those changes are not 
+During the process of packaging R2WinBUGS_0.1 - R2WinBUGS_0.2-1,
+quite a lot of changes had been made. Those changes are not
 documented anywhere ...
 
 
@@ -12,13 +12,17 @@ Update 0.2-2 (28 Apr 2004):
 Update 0.2-3 (10 Sept 2004):
 - bugs.data.inits split to bugs.inits and bugs.data, the latter exported
   from the Namespace.
-  Now we can use already written data files in bugs(). 
+  Now we can use already written data files in bugs().
 
 Update 0.2-4 (05 Oct 2004):
-- bugs.script() did not work for large n.iter values in update step 
+- bugs.script() did not work for large n.iter values in update step
   (no scientific notation allowed)
 
 Update 0.2-5 (20 Oct 2004):
 - bugs() and bugs.script() have a new argument bin that allows to specify
   a number of iterations. After each "bin" iterations the coda files are saved.
+
+Update 0.2-6 (18 May 2005):
+- bugs() changes in order to return a file names of coda output files
+- new read.bugs() returns a coda mcmc.list object, if codaPkg=TRUE.
 
