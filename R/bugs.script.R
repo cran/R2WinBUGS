@@ -1,6 +1,6 @@
 "bugs.script" <-
 function (parameters.to.save, n.chains, n.iter, n.burnin,
-    n.thin, bugs.directory, model.file, debug=FALSE, is.inits, bin){
+    n.thin, bugs.directory, model.file, debug=FALSE, is.inits, bin, DIC = FALSE){
 # Write file script.txt for Bugs to read
 #  if (n.chains<2) stop ("n.chains must be at least 2")
   if((ceiling(n.iter/n.thin) - ceiling(n.burnin/n.thin)) < 2) 
@@ -28,12 +28,12 @@ function (parameters.to.save, n.chains, n.iter, n.burnin,
     "thin.updater (", n.thin, ")\n",
     "update (", ceiling(n.burnin/n.thin), ")\n",
      savelist,
-    "dic.set()\n",
+    if(DIC) "dic.set()\n",
     rep(
     c("update (", formatC(ceiling(bin), format = "d"), ")\n",
     "coda (*, '", coda, "')\n"),redo),
     "stats (*)\n",
-    "dic.stats()\n",
+    if(DIC) "dic.stats()\n",
     "history (*, '", history, "')\n",
     "save ('", logfile, "')\n", file=script, sep="", append=FALSE)
   if (!debug) cat ("quit ()\n", file=script, append=TRUE)

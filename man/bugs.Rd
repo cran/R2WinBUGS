@@ -42,7 +42,8 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
     default is to save only at the end.}
   \item{debug}{if \code{FALSE} (default), WinBUGS is closed automatically
   when the script has finished running, otherwise WinBUGS remains open for further investigation}
-  \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD, and DIC}
+  \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD, and DIC.
+    This is either done in WinBUGS directly (\code{codaPkg = TRUE}) or within R (\code{codaPkg = FALSE}).}
   \item{digits}{number of significant digits used for WinBUGS input, see \code{\link{formatC}}}
   \item{codaPkg}{logical; if \code{FALSE} (default) a \code{bugs} object is returned,
     if \code{TRUE} file names of WinBUGS output are returned for easy access by the \pkg{coda} package

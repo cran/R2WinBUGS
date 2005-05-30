@@ -30,7 +30,8 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
   }
   else new.model.file <- model.file
   bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
-    bugs.directory, new.model.file, debug=debug, is.inits=!is.null(inits), bin = bin)
+    bugs.directory, new.model.file, debug=debug, is.inits=!is.null(inits), 
+    bin = bin, DIC = DIC)
   bugs.run(n.burnin, bugs.directory)
   if(codaPkg){
     return(file.path(getwd(), paste("coda", 1:n.chains, ".txt", sep="")))

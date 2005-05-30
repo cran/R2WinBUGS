@@ -26,3 +26,5 @@ Update 0.2-6 (18 May 2005):
 - bugs() changes in order to return a file names of coda output files
 - new read.bugs() returns a coda mcmc.list object, if codaPkg=TRUE.
 
+Update 0.2-8 (30 May 2005):
+- bugs passed DIC to bugs.script in order to be able to disable it
