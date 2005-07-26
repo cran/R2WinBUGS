@@ -28,3 +28,6 @@ Update 0.2-6 (18 May 2005):
 
 Update 0.2-8 (30 May 2005):
 - bugs passed DIC to bugs.script in order to be able to disable it
+
+Update 0.2-9 (26 July 2005):
+- bugs has new argument clearWD

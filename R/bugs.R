@@ -4,7 +4,8 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
     n.thin = max(1, floor(n.chains * (n.iter - n.burnin) / 1000)), 
     bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE, 
-    bugs.directory = "c:/Program Files/WinBUGS14/", working.directory = NULL){
+    bugs.directory = "c:/Program Files/WinBUGS14/", working.directory = NULL,
+    clearWD = FALSE){
 
   # Checking number of inits, which is NOT save here:
   if(!missing(inits) && !is.function(inits) && (length(inits) != n.chains)) 
@@ -26,7 +27,7 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
   if(length(grep("\\.bug$", model.file))){
     new.model.file <- sub("\\.bug$", "\\.txt", model.file)
     file.copy(model.file, new.model.file, overwrite = TRUE)
-    on.exit(file.remove(new.model.file))
+    on.exit(file.remove(new.model.file), add = TRUE)
   }
   else new.model.file <- model.file
   bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
@@ -39,6 +40,10 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
   else{
     sims <- c(bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC), 
         model.file = model.file, is.DIC = DIC)
+    if(clearWD)
+        file.remove(c("data.txt", "log.odc", "codaIndex.txt",
+            paste("inits", 1:n.chains, ".txt", sep=""),
+            paste("coda", 1:n.chains, ".txt", sep="")))
     class(sims) <- "bugs"
     return(sims)
   }

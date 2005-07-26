@@ -11,7 +11,7 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
     bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE,
     bugs.directory = "c:/Program Files/WinBUGS14/",
-    working.directory = NULL)
+    working.directory = NULL, clearWD = FALSE)
 }
 \arguments{
   \item{data}{either a named list (names corresponding to variable names in the \code{model.file}) 
@@ -52,6 +52,11 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
   \item{working.directory}{sets working directory during execution of this function;
     WinBUGS' in- and output will be stored in this directory;
     if \code{NULL}, the current working directory is chosen.}
+  \item{clearWD}{logical; indicating whether the files \file{data.txt}, 
+    \file{inits[1:n.chains].txt}, \file{log.odc}, \file{codaIndex.txt}, and
+    \file{coda[1:nchains].txt} should be removed after WinBUGS has finished.
+    If set to \code{TRUE}, this argument is only respected if \code{codaPkg = FALSE}.
+  }
 }
 \details{
 To run:
@@ -142,7 +147,7 @@ parameters <- c("theta", "mu.theta", "sigma.theta")
 schools.sim <- bugs(data, inits, parameters, model.file,
     n.chains = 3, n.iter = 1000,
     bugs.directory = "c:/Program Files/WinBUGS14/",
-    working.directory = NULL)
+    working.directory = NULL, clearWD = TRUE)
 print(schools.sim)
 plot(schools.sim)
 }
