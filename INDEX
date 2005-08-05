@@ -1,6 +1,0 @@
-attach.all              Attach / detach elements of a bugs objects to
-                        search path
-bugs                    Run WinBUGS from R
-plot.bugs               Plotting a bugs object
-print.bugs              Printing a bugs object
-schools                 8 schools analysis

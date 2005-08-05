@@ -1,25 +1,42 @@
 \name{attach.all}
 \alias{attach.all}
 \alias{detach.all}
-\title{Attach / detach elements of a bugs objects to search path}
-\description{The database is attached to the \R search path. See \code{\link{attach}} for details.}
+\alias{attach.bugs}
+\alias{detach.bugs}
+\title{Attach / detach elements of (bugs) objects to search path}
+\description{The database is attached/detached to the search path. See \code{\link{attach}} for details.}
 \usage{
-    attach.all(.a, overwrite = FALSE)
-    detach.all()
+    attach.all(x, overwrite = NA, name = "attach.all")
+    attach.bugs(x, overwrite = NA)
+    detach.all(name = "attach.all")
+    detach.bugs()
 }
 \arguments{
-  \item{.a}{A \code{bugs} object}
-  \item{overwrite}{If \code{TRUE}, overwrites variables if necessary.
-    (The usual "attach" function in R only attaches the variables that are not yet defined.)}
+  \item{x}{An object, which must be of class \code{bugs} for \code{attach.bugs}.}
+  \item{overwrite}{If \code{TRUE}, objects with identical names in the Workspace (.GlobalEnv) 
+    that are masking objects in the database to be attached will be deleted.
+
+    If \code{NA} (the default) and an interactive session is running, a dialog box asks the user 
+    whether masking objects should be deleted.
+    In non-interactive mode, behaviour is identical to \code{overwrite=FALSE}, i.e. nothing will be deleted.}
+  \item{name}{The name of the environment where \code{x} will be attached / which will be detached.}
 }
+\details{
+    While \code{attach.all} attaches all elements of an object \code{x} to a database called \code{name},
+    \code{attach.bugs} attaches all elements of a \code{bugs} object \code{x} to the database \code{bugs.all}
+    \emph{and} all elements of \code{x$sims.list} to the database \code{bugs.sims} (in this order) 
+    itself making use of \code{attach.all}.\cr
+    \code{detach.all} and \code{detach.bugs} are removing the databases mentioned above.
+    }
 \note{
-    Without detaching, do not use \code{attach.all} on another \code{bugs} object,
-    because instead of the given name, an object called \code{.a} is attached.
+    Without detaching, do not use \code{attach.all} or \code{attach.bugs} on another (\code{bugs}) object,
+    because instead of the given name, an object called \code{name} is attached.
     Therefore strange things may happen...
 }
 \value{
-  \code{attach.all} invisibly returns the \code{\link{environment}}.\cr
-  \code{detach.all} detaches the \code{environment} named \code{.a} created by \code{attach.all}.
+  \code{attach.all} and \code{attach.bugs} invisibly return the \code{\link{environment}}(s).\cr
+  \code{detach.all} and \code{detach.bugs} detach the \code{environment}(s) named \code{name} 
+    created by \code{attach.all}.
 }
 \seealso{\code{\link{bugs}}, \code{\link{attach}}, \code{\link{detach}}}
 \examples{
@@ -45,7 +62,7 @@ schools.sim <- bugs(data, inits, parameters, model.file,
     working.directory = NULL)
 
 # Do some inferential summaries
-attach.all(schools.sim)
+attach.bugs(schools.sim)
 # posterior probability that the coaching program in school A 
 # is better than in school C:
 print(mean(theta[,1] > theta[,3]))
@@ -53,6 +70,7 @@ print(mean(theta[,1] > theta[,3]))
 # and school C's program:
 print(quantile(theta[,1] - theta[,3], c(.25, .75)))  
 plot(theta[,1], theta[,3]) 
+detach.bugs()
 }
 }
 \keyword{data}

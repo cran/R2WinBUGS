@@ -31,3 +31,7 @@ Update 0.2-8 (30 May 2005):
 
 Update 0.2-9 (26 July 2005):
 - bugs has new argument clearWD
+
+Update 1.0-0 (05 Aug 2005):
+- attach.all(), detach.all(), attach.bugs() and detach.bugs() added/changed 
+  more or less according to Andrew Gelman's current bugs.R
