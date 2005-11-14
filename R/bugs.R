@@ -8,7 +8,7 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
     clearWD = FALSE){
 
   # Checking number of inits, which is NOT save here:
-  if(!missing(inits) && !is.function(inits) && (length(inits) != n.chains)) 
+  if(!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) 
     stop("Number of initialized chains (length(inits)) != n.chains")
   if(!is.null(working.directory)){
       savedWD <- getwd()

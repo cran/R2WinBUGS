@@ -35,3 +35,6 @@ Update 0.2-9 (26 July 2005):
 Update 1.0-0 (05 Aug 2005):
 - attach.all(), detach.all(), attach.bugs() and detach.bugs() added/changed 
   more or less according to Andrew Gelman's current bugs.R
+
+Update 1.0-1 (14 Nov 2005):
+- make inits=NULL work (again ?)
