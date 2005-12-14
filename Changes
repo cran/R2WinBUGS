@@ -38,3 +38,7 @@ Update 1.0-0 (05 Aug 2005):
 
 Update 1.0-1 (14 Nov 2005):
 - make inits=NULL work (again ?)
+
+Update 1.1-0 (14 Dec 2005):
+- Contribution by Ben Bolker and Yun Yan's rbugs package:
+  make R2WinBUGS work under WINE

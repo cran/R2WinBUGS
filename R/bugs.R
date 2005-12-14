@@ -5,11 +5,18 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
     bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE, 
     bugs.directory = "c:/Program Files/WinBUGS14/", working.directory = NULL,
-    clearWD = FALSE){
+    clearWD = FALSE, useWINE = FALSE, WINE = Sys.getenv("WINE")){
 
-  # Checking number of inits, which is NOT save here:
+  ## Checking number of inits, which is NOT save here:
   if(!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) 
     stop("Number of initialized chains (length(inits)) != n.chains")
+  if (useWINE) {  # attempt to find wine
+    if (!nchar(WINE)) {
+        WINE <- system("locate wine | grep bin/wine$", intern = TRUE)
+        WINE <- WINE[length(WINE)]
+    }
+    if (!length(WINE)) stop("couldn't locate WINE binary")
+  }
   if(!is.null(working.directory)){
       savedWD <- getwd()
       setwd(working.directory)
@@ -23,7 +30,7 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
     stop("File data.txt does not exist.")
   bugs.inits(inits, n.chains, digits)
   if(DIC) parameters.to.save <- c(parameters.to.save, "deviance")
-  # Model files with extension ".bug" need to be renamed to ".txt"
+  ## Model files with extension ".bug" need to be renamed to ".txt"
   if(length(grep("\\.bug$", model.file))){
     new.model.file <- sub("\\.bug$", "\\.txt", model.file)
     file.copy(model.file, new.model.file, overwrite = TRUE)
@@ -32,8 +39,10 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
   else new.model.file <- model.file
   bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
     bugs.directory, new.model.file, debug=debug, is.inits=!is.null(inits), 
-    bin = bin, DIC = DIC)
-  bugs.run(n.burnin, bugs.directory)
+    bin = bin, DIC = DIC, useWINE = useWINE)
+  if (useWINE && missing(bugs.directory))
+    bugs.directory <- winedriveTr(bugs.directory)
+  bugs.run(n.burnin, bugs.directory, WINE = WINE)
   if(codaPkg){
     return(file.path(getwd(), paste("coda", 1:n.chains, ".txt", sep="")))
   }

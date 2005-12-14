@@ -11,7 +11,8 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
     bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE,
     bugs.directory = "c:/Program Files/WinBUGS14/",
-    working.directory = NULL, clearWD = FALSE)
+    working.directory = NULL, clearWD = FALSE, useWINE = FALSE, 
+    WINE = Sys.getenv("WINE"))
 }
 \arguments{
   \item{data}{either a named list (names corresponding to variable names in the \code{model.file}) 
@@ -57,6 +58,8 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
     \file{coda[1:nchains].txt} should be removed after WinBUGS has finished.
     If set to \code{TRUE}, this argument is only respected if \code{codaPkg = FALSE}.
   }
+  \item{useWINE}{logical; attempt to use the WINE emulator to run WinBUGS under Linux}
+  \item{WINE}{character; name of WINE binary file}
 }
 \details{
 To run:
