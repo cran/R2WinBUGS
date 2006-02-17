@@ -6,6 +6,8 @@ function (n.burnin, bugs.directory){
             overwrite = TRUE)
   registry <- readBin(file.path(bugs.directory, "System/Rsrc/Registry.odc"), 
                 "character", 400, size = 1, endian = "little")
+  locale <- Sys.getlocale("LC_CTYPE")
+  Sys.setlocale("LC_CTYPE", "C")
   info <- registry[regexpr("Int", registry, fixed = TRUE, useBytes = TRUE) > 0]
   while(regexpr("\r", info) > 0){
     newline <- regexpr("\r", info)
@@ -22,6 +24,7 @@ function (n.burnin, bugs.directory){
       }
     }
   }
+  Sys.setlocale("LC_CTYPE", locale)
   writeBin (registry,
       file.path(bugs.directory, "System/Rsrc/Registry.odc"), endian = "little")
 }

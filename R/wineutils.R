@@ -2,7 +2,6 @@
 
 ## get drive mapping table from ~/.wine/config
 winedriveMap <- function(config="~/.wine/config") {
-  require(tools) ## for file_path_as_absolute
   if (!file.exists(config)) return (NULL);
   con <- readLines(config)
   con <- con[- grep("^;", con)]
@@ -17,7 +16,7 @@ winedriveMap <- function(config="~/.wine/config") {
                    foo <- unlist(strsplit(x, "\""))
                    foo[length(foo)]
                  })
-  dir <- sub("%HOME%",file_path_as_absolute("~"),dir)
+  dir <- sub("%HOME%",tools::file_path_as_absolute("~"),dir)
   data.frame(drive = I(drive), path = I(dir), row.names=NULL)
 }
 

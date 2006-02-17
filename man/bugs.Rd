@@ -11,8 +11,9 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
     bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE,
     bugs.directory = "c:/Program Files/WinBUGS14/",
-    working.directory = NULL, clearWD = FALSE, useWINE = FALSE, 
-    WINE = Sys.getenv("WINE"))
+    working.directory = NULL, clearWD = FALSE, 
+    useWINE = .Platform$OS.type != "windows", WINE = Sys.getenv("WINE"),
+    newWINE = FALSE, WINEPATH = NULL)
 }
 \arguments{
   \item{data}{either a named list (names corresponding to variable names in the \code{model.file}) 
@@ -58,8 +59,13 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
     \file{coda[1:nchains].txt} should be removed after WinBUGS has finished.
     If set to \code{TRUE}, this argument is only respected if \code{codaPkg = FALSE}.
   }
-  \item{useWINE}{logical; attempt to use the WINE emulator to run WinBUGS under Linux}
+  \item{useWINE}{logical; attempt to use the WINE emulator to run WinBUGS, 
+    defaults to \code{TRUE} on Windows, and \code{FALSE} otherwise.
+    If WINE is used, the arguments \code{bugs.directory} and \code{working.directory} must be given in form of Linux paths
+    rather than Windows paths (if not \code{NULL}).}
   \item{WINE}{character; name of WINE binary file}
+  \item{newWINE}{Set this one to \code{TRUE} for new versions of WINE.}
+  \item{WINEPATH}{Path the WINE, it is tried hard to get the information automatically if not given.}
 }
 \details{
 To run:

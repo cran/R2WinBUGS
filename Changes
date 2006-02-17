@@ -42,3 +42,6 @@ Update 1.0-1 (14 Nov 2005):
 Update 1.1-0 (14 Dec 2005):
 - Contribution by Ben Bolker and Yun Yan's rbugs package:
   make R2WinBUGS work under WINE
+
+Update 1.1-1 (17 Feb 2006):
+- WINE tweaks (mainly by Gregor Gorjanc)

@@ -5,7 +5,7 @@
 \usage{
 bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, 
     bugs.directory, model.file, debug = FALSE, is.inits, bin, 
-    DIC = FALSE, useWINE = FALSE)
+    DIC = FALSE, useWINE = FALSE, newWINE = FALSE)
 }
 \arguments{
   \item{parameters.to.save}{parameters that should be monitored}
@@ -22,6 +22,7 @@ bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   \item{bin}{number of iterations between saving of results}
   \item{DIC}{logical; if \code{TRUE}, compute deviance, pD, and DIC automatically in WinBUGS}
   \item{useWINE}{logical; use WINE to run WinBUGS under Linux}
+  \item{newWINE}{set this one to \code{TRUE} for new versions of WINE.} 
 }
 \value{
     Does not return anything.

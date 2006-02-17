@@ -1,21 +1,27 @@
 "bugs" <-
 function(data, inits, parameters.to.save, model.file = "model.txt",
     n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter / 2),
-    n.thin = max(1, floor(n.chains * (n.iter - n.burnin) / 1000)), 
+    n.thin = max(1, floor(n.chains * (n.iter - n.burnin) / 1000)),
     bin = (n.iter - n.burnin) / n.thin,
-    debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE, 
+    debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE,
     bugs.directory = "c:/Program Files/WinBUGS14/", working.directory = NULL,
-    clearWD = FALSE, useWINE = FALSE, WINE = Sys.getenv("WINE")){
-
+    clearWD = FALSE, useWINE = .Platform$OS.type != "windows", WINE = Sys.getenv("WINE"),
+    newWINE = FALSE, WINEPATH = NULL){
+    
   ## Checking number of inits, which is NOT save here:
-  if(!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains)) 
+  if(!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains))
     stop("Number of initialized chains (length(inits)) != n.chains")
-  if (useWINE) {  # attempt to find wine
+  if (useWINE) {  # attempt to find wine and winepath
     if (!nchar(WINE)) {
         WINE <- system("locate wine | grep bin/wine$", intern = TRUE)
         WINE <- WINE[length(WINE)]
     }
     if (!length(WINE)) stop("couldn't locate WINE binary")
+    if (!nchar(WINEPATH)) {
+        WINEPATH <- system("locate winepath | grep bin/winepath$", intern = TRUE)
+        WINEPATH <- WINEPATH[length(WINEPATH)]
+    }
+    if (!length(WINEPATH)) stop("couldn't locate WINEPATH binary")
   }
   if(!is.null(working.directory)){
       savedWD <- getwd()
@@ -23,10 +29,10 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
       on.exit(setwd(savedWD))
   }
   if(!file.exists(model.file)) stop(paste(model.file, "does not exist."))
-  if(file.info(model.file)$isdir) stop(paste(model.file, "is a directory, but a file is required."))  
-  if(!(length(data) == 1 && is.vector(data) && is.character(data) && data == "data.txt"))
-    bugs.data(data, dir = getwd(), digits)  
-  else if(!file.exists(data))
+  if(file.info(model.file)$isdir) stop(paste(model.file, "is a directory, but a file is required."))
+  if(!(length(data) == 1 && is.vector(data) && is.character(data) && data == "data.txt")){
+    bugs.data(data, dir = getwd(), digits)
+  } else if(!file.exists(data))
     stop("File data.txt does not exist.")
   bugs.inits(inits, n.chains, digits)
   if(DIC) parameters.to.save <- c(parameters.to.save, "deviance")
@@ -35,19 +41,17 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
     new.model.file <- sub("\\.bug$", "\\.txt", model.file)
     file.copy(model.file, new.model.file, overwrite = TRUE)
     on.exit(file.remove(new.model.file), add = TRUE)
-  }
-  else new.model.file <- model.file
+  } else new.model.file <- model.file
   bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
-    bugs.directory, new.model.file, debug=debug, is.inits=!is.null(inits), 
-    bin = bin, DIC = DIC, useWINE = useWINE)
-  if (useWINE && missing(bugs.directory))
-    bugs.directory <- winedriveTr(bugs.directory)
+    bugs.directory, new.model.file, debug=debug, is.inits=!is.null(inits),
+    bin = bin, DIC = DIC, useWINE = useWINE, newWINE = newWINE)
+  #if (useWINE && missing(bugs.directory))
+  #  bugs.directory <- winedriveTr(bugs.directory)
   bugs.run(n.burnin, bugs.directory, WINE = WINE)
   if(codaPkg){
     return(file.path(getwd(), paste("coda", 1:n.chains, ".txt", sep="")))
-  }
-  else{
-    sims <- c(bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC), 
+  } else{
+    sims <- c(bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC),
         model.file = model.file, is.DIC = DIC)
     if(clearWD)
         file.remove(c("data.txt", "log.odc", "codaIndex.txt",

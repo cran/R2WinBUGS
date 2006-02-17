@@ -3,9 +3,9 @@ function (n.burnin, bugs.directory, WINE = ""){
 ## Update the lengths of the adaptive phases in the Bugs updaters
   bugs.update.settings(n.burnin, bugs.directory)
 ## Return the lengths of the adaptive phases to their original settings
-  on.exit(file.copy(paste(bugs.directory, "System/Rsrc/Registry_Rsave.odc", sep=""), 
-      paste(bugs.directory, "System/Rsrc/Registry.odc", sep=""),
-      overwrite = TRUE))
+  on.exit(file.copy(file.path(bugs.directory, "System/Rsrc/Registry_Rsave.odc"),
+                    file.path(bugs.directory, "System/Rsrc/Registry.odc"),
+                    overwrite = TRUE))
 ## Search Win*.exe (WinBUGS executable) within bugs.directory
   dos.location <- file.path(bugs.directory, 
     grep("^Win[[:alnum:]]*\.exe$", list.files(bugs.directory), value = TRUE)[1])

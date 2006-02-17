@@ -1,27 +1,30 @@
 "bugs.script" <-
 function (parameters.to.save, n.chains, n.iter, n.burnin,
-    n.thin, bugs.directory, model.file, debug=FALSE, is.inits, bin, 
-    DIC = FALSE, useWINE = FALSE){
+    n.thin, bugs.directory, model.file, debug=FALSE, is.inits, bin,
+    DIC = FALSE, useWINE = FALSE, newWINE = FALSE){
 ### Write file script.txt for Bugs to read
 ###  if (n.chains<2) stop ("n.chains must be at least 2")
-  trfile <- function(x) { 
-    if (useWINE) winedriveTr(x) 
-    else x 
+  trfile <- function(x) { # win -> native
+    if (useWINE) winedriveTr(x)
+    else x
   }
-  rtrfile <- function(x) { 
-    if (useWINE) winedriveRTr(x) 
-    else x 
+  rtrfile <- function(x) { # native -> win
+    if (useWINE && !newWINE) return(winedriveRTr(x))
+    if (useWINE && newWINE) {
+        x <- system(paste(WINEPATH, "-w", x), intern = TRUE)
+        return(gsub("\\\\", "/", x)) ## under wine BUGS cannot use \ or \\
+    } else x
   }
   script.bugs.directory <- bugs.directory
-  bugs.directory <- trfile(bugs.directory)
+  if (!newWINE) bugs.directory <- trfile(bugs.directory)
 
-  if((ceiling(n.iter/n.thin) - ceiling(n.burnin/n.thin)) < 2) 
+  if((ceiling(n.iter/n.thin) - ceiling(n.burnin/n.thin)) < 2)
     stop ("(n.iter-n.burnin)/n.thin must be at least 2")
   working.directory <- getwd()
   script <- file.path(bugs.directory, "script.txt")
-  model <- if(length(grep("\\\\", model.file)) || length(grep("/", model.file)))
+  model <- if(length(grep("\\\\", model.file)) || length(grep("/", model.file))){
     model.file
-    else file.path(working.directory, model.file)
+  } else file.path(working.directory, model.file)
   data <- file.path(working.directory, "data.txt")
   history <- file.path(working.directory, "history.odc")
   coda  <- file.path(working.directory, "coda")
