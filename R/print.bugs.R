@@ -1,18 +1,29 @@
-print.bugs <- function (x, digits.summary = 1, ...){
-    cat ('Inference for Bugs model at \"', x$model.file, "\"\n ",
-         x$n.chains, " chains, each with ", x$n.iter, " iterations (first ",
-         x$n.burnin, " discarded)", sep="")
-    if (x$n.thin > 1) cat (", n.thin =", x$n.thin)
+fround <- function(x, digits) 
+    format(round(x, digits), nsmall=digits)
+    
+print.bugs <- function(x, digits.summary = 1, ...){
+    if(!is.null(x$model.file))
+        cat("Inference for Bugs model at \"", x$model.file, "\", ", sep="")
+    if(!is.null(x$program))
+        cat("fit using ", x$program, ",", sep="")
+    cat("\n ", x$n.chains, " chains, each with ", x$n.iter, 
+        " iterations (first ", x$n.burnin, " discarded)", sep = "")
+    if(x$n.thin > 1) cat(", n.thin =", x$n.thin)
     cat("\n n.sims =", x$n.sims, "iterations saved\n")
-    print(round (x$summary, digits.summary), ...)
-    if (!is.null(x$DIC)){
-      cat("\npD =", round(x$pD, 1), "and DIC =", round(x$DIC, 1),
-           "(using the rule, pD = var(deviance)/2)\n")
-      cat("DIC is an estimate of expected predictive error (lower deviance is better).\n") 
-    }
+    print(round(x$summary, digits.summary), ...)
     if(x$n.chains > 1){
       cat("\nFor each parameter, n.eff is a crude measure of effective sample size,")
       cat("\nand Rhat is the potential scale reduction factor (at convergence, Rhat=1).\n")
+    }
+    if(length(x$DIC)==1 && x$DIC){
+        cat("\npD =", fround(x$pD, 1), "and DIC =", fround(x$DIC, 1),
+            "(using the rule, pD = var(deviance)/2)\n")
+        cat("DIC is an estimate of expected predictive error (lower deviance is better).\n")
+    }
+    else if(length(x$DIC)>1) {
+        cat("\n")
+        print(round(x$DIC, 1))
+        cat("DIC is an estimate of expected predictive error (lower deviance is better).\n")
     }
     invisible(x)
 }

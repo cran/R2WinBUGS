@@ -1,3 +1,4 @@
-export(bugs, attach.all, detach.all, attach.bugs, detach.bugs, bugs.data, read.bugs)
+export(bugs, attach.all, detach.all, attach.bugs, detach.bugs, bugs.data, read.bugs, 
+bugs.log, openbugs, as.bugs.array, write.model)
 S3method(print, bugs)
 S3method(plot, bugs)

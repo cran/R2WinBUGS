@@ -41,3 +41,17 @@ winedriveRTr <- function(unixpath, DriveTable=winedriveMap()) {
   } else stop("can't find equivalent Windows path: file may be inaccessible")
   winpath
 }
+
+
+win2native <- function(x, useWINE=.Platform$OS.type != "windows") { # win -> native
+  if (useWINE) winedriveTr(x)
+  else x
+}
+
+native2win <- function(x, useWINE=.Platform$OS.type != "windows", newWINE=TRUE) { # native -> win
+  if (useWINE && !newWINE) return(winedriveRTr(x))
+  if (useWINE && newWINE) {
+      x <- system(paste(WINEPATH, "-w", x), intern = TRUE)
+      return(gsub("\\\\", "/", x)) ## under wine BUGS cannot use \ or \\
+  } else x
+}

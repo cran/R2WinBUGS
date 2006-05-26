@@ -4,8 +4,8 @@
 \description{Write file \file{script.txt} for WinBUGS to read - intended for internal use only}
 \usage{
 bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, 
-    bugs.directory, model.file, debug = FALSE, is.inits, bin, 
-    DIC = FALSE, useWINE = FALSE, newWINE = FALSE)
+    model.file, debug = FALSE, is.inits, bin, DIC = FALSE, 
+    useWINE = FALSE, newWINE = FALSE, WINEPATH = NULL)
 }
 \arguments{
   \item{parameters.to.save}{parameters that should be monitored}
@@ -13,7 +13,6 @@ bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   \item{n.iter}{number of total iterations (including burn in)}
   \item{n.burnin}{length of burn in}
   \item{n.thin}{size of thinning parameter}
-  \item{bugs.directory}{directory that contains the WinBUGS executable}  
   \item{model.file}{file containing the model written in WinBUGS code}
   \item{debug}{if \code{FALSE}, WinBUGS is closed automatically, 
     otherwise WinBUGS remains open for further investigation}
@@ -23,6 +22,8 @@ bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   \item{DIC}{logical; if \code{TRUE}, compute deviance, pD, and DIC automatically in WinBUGS}
   \item{useWINE}{logical; use WINE to run WinBUGS under Linux}
   \item{newWINE}{set this one to \code{TRUE} for new versions of WINE.} 
+  \item{WINEPATH}{Path the WINE, \code{bugs} tries hard to get the information automatically and 
+    pass it to this function, if not given.}
 }
 \value{
     Does not return anything.

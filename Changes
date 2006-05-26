@@ -45,3 +45,16 @@ Update 1.1-0 (14 Dec 2005):
 
 Update 1.1-1 (17 Feb 2006):
 - WINE tweaks (mainly by Gregor Gorjanc)
+
+Update 2.0-0 (08 May 2006):
+- bugs() doc fix/updates on scrambling
+- bugs.run() has new arg useWINE (by Gregor Gorjanc)
+- bugs() and bugs.script() patched for WINEPATH issue
+- bugs.script() changed to save log file in ASCII
+- new function bugs.log() by Gregor Gorjanc
+- new functions as.bugs.array, openbugs and sort.name by 
+  Jouni Kerman and Andrew Gelman
+- new function write.model() based on ideas from Jouni Kerman
+
+Update 2.0-1 (26 May 2006):
+- some wine patches for 2.2-0 by Gregor Gorjanc

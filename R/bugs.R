@@ -1,13 +1,22 @@
 "bugs" <-
-function(data, inits, parameters.to.save, model.file = "model.txt",
+function(data, inits, parameters.to.save, model.file = "model.bug",
     n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter / 2),
     n.thin = max(1, floor(n.chains * (n.iter - n.burnin) / 1000)),
     bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE,
-    bugs.directory = "c:/Program Files/WinBUGS14/", working.directory = NULL,
+    bugs.directory = "c:/Program Files/WinBUGS14/", 
+    program = c("winbugs", "openbugs"),
+    working.directory = NULL,
     clearWD = FALSE, useWINE = .Platform$OS.type != "windows", WINE = Sys.getenv("WINE"),
     newWINE = FALSE, WINEPATH = NULL){
     
+  ## If OpenBUGS, we only call openbugs() and exit...
+  program <- match.arg(program)
+  if (program == "openbugs")
+    return(openbugs(data, inits, parameters.to.save, model.file,
+      n.chains, n.iter, n.burnin, n.thin, DIC, bugs.directory,
+      working.directory, digits))
+
   ## Checking number of inits, which is NOT save here:
   if(!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains))
     stop("Number of initialized chains (length(inits)) != n.chains")
@@ -40,24 +49,22 @@ function(data, inits, parameters.to.save, model.file = "model.txt",
   if(length(grep("\\.bug$", model.file))){
     new.model.file <- sub("\\.bug$", "\\.txt", model.file)
     file.copy(model.file, new.model.file, overwrite = TRUE)
-    on.exit(file.remove(new.model.file), add = TRUE)
+    on.exit(try(file.remove(new.model.file)), add = TRUE)
   } else new.model.file <- model.file
   bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
-    bugs.directory, new.model.file, debug=debug, is.inits=!is.null(inits),
-    bin = bin, DIC = DIC, useWINE = useWINE, newWINE = newWINE)
-  #if (useWINE && missing(bugs.directory))
-  #  bugs.directory <- winedriveTr(bugs.directory)
-  bugs.run(n.burnin, bugs.directory, WINE = WINE)
-  if(codaPkg){
+    new.model.file, debug=debug, is.inits=!is.null(inits),
+    bin = bin, DIC = DIC, useWINE = useWINE, newWINE = newWINE, WINEPATH = WINEPATH)
+  bugs.run(n.burnin, bugs.directory, WINE = WINE, useWINE = useWINE)
+
+  if(codaPkg)
     return(file.path(getwd(), paste("coda", 1:n.chains, ".txt", sep="")))
-  } else{
-    sims <- c(bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC),
-        model.file = model.file, is.DIC = DIC)
-    if(clearWD)
-        file.remove(c("data.txt", "log.odc", "codaIndex.txt",
-            paste("inits", 1:n.chains, ".txt", sep=""),
-            paste("coda", 1:n.chains, ".txt", sep="")))
-    class(sims) <- "bugs"
-    return(sims)
-  }
+
+  sims <- c(bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC),
+    model.file = model.file, is.DIC = !is.null(DIC), program = program)
+  if(clearWD)
+    file.remove(c("data.txt", "log.odc", "log.txt", "codaIndex.txt",
+        paste("inits", 1:n.chains, ".txt", sep=""),
+        paste("coda", 1:n.chains, ".txt", sep="")))
+  class(sims) <- "bugs"
+  return(sims)
 }

@@ -1,16 +1,17 @@
 \name{bugs}
 \alias{bugs}
-\title{Run WinBUGS from R}
+\title{Run WinBUGS and OpenBUGS from R}
 \description{The \code{bugs} function takes data and starting values as input.
 It automatically writes a WinBUGS script, calls the model,
 and saves the simulations for easy access in R.}
 \usage{
-bugs(data, inits, parameters.to.save, model.file = "model.txt",
+bugs(data, inits, parameters.to.save, model.file = "model.bug",
     n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
     n.thin = max(1, floor(n.chains * (n.iter - n.burnin)/1000)),
     bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE,
     bugs.directory = "c:/Program Files/WinBUGS14/",
+    program = c("winbugs", "openbugs"),
     working.directory = NULL, clearWD = FALSE, 
     useWINE = .Platform$OS.type != "windows", WINE = Sys.getenv("WINE"),
     newWINE = FALSE, WINEPATH = NULL)
@@ -28,7 +29,9 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
   \item{parameters.to.save}{character vector of the names of the parameters to save which should be monitored}
   \item{model.file}{file containing the model written in WinBUGS code.
     The extension can be either \file{.bug} or \file{.txt}.
-    If \file{.bug}, a copy of the file with extension \file{.txt} will be created
+    
+    If the extension is \file{.bug} and \code{program=="winbugs"}, 
+    a copy of the file with extension \file{.txt} will be created
     in the \code{bugs()} call and removed afterwards.
     Note that similarly named \file{.txt} files will be overwritten.}
   \item{n.chains}{number of Markov chains (default: 3)}
@@ -51,6 +54,8 @@ bugs(data, inits, parameters.to.save, model.file = "model.txt",
     if \code{TRUE} file names of WinBUGS output are returned for easy access by the \pkg{coda} package
     through function \code{\link{read.bugs}}.}
   \item{bugs.directory}{directory that contains the WinBUGS executable}
+  \item{program}{the program to use, either \code{winbugs} or \code{openbugs}, 
+    the latter makes use of function \code{\link{openbugs}} and requires the CRAN package \pkg{BRugs}.}
   \item{working.directory}{sets working directory during execution of this function;
     WinBUGS' in- and output will be stored in this directory;
     if \code{NULL}, the current working directory is chosen.}
@@ -97,11 +102,13 @@ To run:
   \item{sims.list}{list of simulated parameters:\cr
     for each scalar parameter, a vector of length n.sims\cr
     for each vector parameter, a 2-way array of simulations,\cr
-    for each matrix parameter, a 3-way array of simulations, etc.}
+    for each matrix parameter, a 3-way array of simulations, etc.
+     (for convenience, the \code{n.keep * n.chains} simulations in
+     sims.matrix and sims.list (but NOT sims.array have been randomly permuted)}
   \item{sims.matrix}{matrix of simulation output, with \code{n.chains * n.keep} rows and
     one column for each element of each saved parameter
     (for convenience, the \code{n.keep * n.chains} simulations in
-     sims.array and sims.list have been randomly permuted)}
+     sims.matrix and sims.list (but NOT sims.array have been randomly permuted)}
   \item{summary}{summary statistics and convergence information for each
     element of each saved parameter.}
   \item{mean}{a list of the estimated parameter means}
@@ -163,4 +170,3 @@ plot(schools.sim)
 }
 \keyword{interface}
 \keyword{models}
-

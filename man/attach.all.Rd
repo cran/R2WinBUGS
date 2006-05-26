@@ -23,11 +23,17 @@
 }
 \details{
     While \code{attach.all} attaches all elements of an object \code{x} to a database called \code{name},
-    \code{attach.bugs} attaches all elements of a \code{bugs} object \code{x} to the database \code{bugs.all}
-    \emph{and} all elements of \code{x$sims.list} to the database \code{bugs.sims} (in this order) 
+    \code{attach.bugs} attaches all elements of \code{x$sims.list} to the database \code{bugs.sims}
     itself making use of \code{attach.all}.\cr
-    \code{detach.all} and \code{detach.bugs} are removing the databases mentioned above.
-    }
+    \code{detach.all} and \code{detach.bugs} are removing the databases
+    mentioned above.\cr
+    \code{attach.all} also attaches \code{n.sims} (the number of
+    simulations saved from the MCMC runs) to the database.\cr\cr
+
+    Each scalar parameter in the model is attached as vectors of length
+    \code{n.sims}, each vector is attached as a 2-way array (with first
+    dimension equal to \code{n.sims}, each matrix is attached as a 3-way
+    array, and so forth.}
 \note{
     Without detaching, do not use \code{attach.all} or \code{attach.bugs} on another (\code{bugs}) object,
     because instead of the given name, an object called \code{name} is attached.
@@ -36,7 +42,7 @@
 \value{
   \code{attach.all} and \code{attach.bugs} invisibly return the \code{\link{environment}}(s).\cr
   \code{detach.all} and \code{detach.bugs} detach the \code{environment}(s) named \code{name} 
-    created by \code{attach.all}.
+  created by \code{attach.all}.
 }
 \seealso{\code{\link{bugs}}, \code{\link{attach}}, \code{\link{detach}}}
 \examples{
