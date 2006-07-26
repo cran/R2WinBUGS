@@ -5,14 +5,14 @@ function(data, inits, parameters.to.save, model.file = "model.bug",
     bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE,
     bugs.directory = "c:/Program Files/WinBUGS14/", 
-    program = c("winbugs", "openbugs"),
+    program = c("winbugs", "openbugs", "WinBugs", "OpenBugs"),
     working.directory = NULL,
     clearWD = FALSE, useWINE = .Platform$OS.type != "windows", WINE = Sys.getenv("WINE"),
     newWINE = FALSE, WINEPATH = NULL){
     
   ## If OpenBUGS, we only call openbugs() and exit...
   program <- match.arg(program)
-  if (program == "openbugs")
+  if (program %in% c("openbugs", "OpenBugs"))
     return(openbugs(data, inits, parameters.to.save, model.file,
       n.chains, n.iter, n.burnin, n.thin, DIC, bugs.directory,
       working.directory, digits))

@@ -17,7 +17,7 @@ print.bugs <- function(x, digits.summary = 1, ...){
     }
     if(length(x$DIC)==1 && x$DIC){
         cat("\npD =", fround(x$pD, 1), "and DIC =", fround(x$DIC, 1),
-            "(using the rule, pD = var(deviance)/2)\n")
+            if(x$DICbyR) "(using the rule, pD = var(deviance)/2)\n" else "(using the rule, pD = Dbar-Dhat)\n")
         cat("DIC is an estimate of expected predictive error (lower deviance is better).\n")
     }
     else if(length(x$DIC)>1) {

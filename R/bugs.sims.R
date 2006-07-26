@@ -109,15 +109,22 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
     long.short=long.short, dimension.short=dimension.short,
     indexes.short=indexes.short, last.values=last.values)
   if(DIC){
-    deviance <- all$sims.array[,,dim(sims.array)[3], drop = FALSE]
-    dim(deviance) <- dim(deviance)[1:2]
-    pD <- numeric(n.chains)
-    DIC <- numeric(n.chains)
-    for (i in 1:n.chains){
-      pD[i] <- var(deviance[,i])/2
-      DIC[i] <- mean(deviance[,i]) + pD[i]
-    }
-    all <- c(all, list (pD=mean(pD), DIC=mean(DIC)))
+     LOG <- bugs.log("log.txt")$DIC
+     if(any(is.na(LOG))){
+        deviance <- all$sims.array[, , dim(sims.array)[3], drop = FALSE]
+        dim(deviance) <- dim(deviance)[1:2]
+        pD <- numeric(n.chains)
+        DIC <- numeric(n.chains)
+        for (i in 1:n.chains) {
+            pD[i] <- var(deviance[, i])/2
+            DIC[i] <- mean(deviance[, i]) + pD[i]
+        }
+        all <- c(all, list(pD = mean(pD), DIC = mean(DIC), DICbyR = TRUE))
+      } else {
+        DIC <- LOG[nrow(LOG),4]
+        pD <- LOG[nrow(LOG),3]
+        all <- c(all, list(pD = pD, DIC = DIC, DICbyR = FALSE))
+      }
   }
   return(all)
 }

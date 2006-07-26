@@ -11,7 +11,7 @@ bugs(data, inits, parameters.to.save, model.file = "model.bug",
     bin = (n.iter - n.burnin) / n.thin,
     debug = FALSE, DIC = TRUE, digits = 5, codaPkg = FALSE,
     bugs.directory = "c:/Program Files/WinBUGS14/",
-    program = c("winbugs", "openbugs"),
+    program = c("winbugs", "openbugs", "WinBugs", "OpenBugs"),
     working.directory = NULL, clearWD = FALSE, 
     useWINE = .Platform$OS.type != "windows", WINE = Sys.getenv("WINE"),
     newWINE = FALSE, WINEPATH = NULL)
@@ -48,13 +48,15 @@ bugs(data, inits, parameters.to.save, model.file = "model.bug",
   \item{debug}{if \code{FALSE} (default), WinBUGS is closed automatically
   when the script has finished running, otherwise WinBUGS remains open for further investigation}
   \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD, and DIC.
-    This is either done in WinBUGS directly (\code{codaPkg = TRUE}) or within R (\code{codaPkg = FALSE}).}
+    This is done in WinBUGS directly using the rule \code{pD = Dbar - Dhat}.
+    If there are less iterations than required for the adaptive phase, 
+    the rule \code{pD = var(deviance) / 2} is used.}
   \item{digits}{number of significant digits used for WinBUGS input, see \code{\link{formatC}}}
   \item{codaPkg}{logical; if \code{FALSE} (default) a \code{bugs} object is returned,
     if \code{TRUE} file names of WinBUGS output are returned for easy access by the \pkg{coda} package
-    through function \code{\link{read.bugs}}.}
+    through function \code{\link{read.bugs}}. (not used if \code{program = "openbugs"})}
   \item{bugs.directory}{directory that contains the WinBUGS executable}
-  \item{program}{the program to use, either \code{winbugs} or \code{openbugs}, 
+  \item{program}{the program to use, either \code{winbugs}/\code{WinBugs} or \code{openbugs}/\code{OpenBugs},
     the latter makes use of function \code{\link{openbugs}} and requires the CRAN package \pkg{BRugs}.}
   \item{working.directory}{sets working directory during execution of this function;
     WinBUGS' in- and output will be stored in this directory;
@@ -120,9 +122,7 @@ To run:
   \item{indexes.short}{indexes of \code{root.short}}
   \item{last.values}{list of simulations from the most recent iteration; they
     can be used as starting points if you wish to run WinBUGS for further iterations}
-  \item{pD}{\code{var(deviance)/2}, an estimate of the effective number of parameters
-    (the variance is computed as the average of the within-chain variances,
-    which gives a more reasonable estimate when convergence has not been reached)}
+  \item{pD}{an estimate of the effective number of parameters, for calculations see the section \dQuote{Arguments}.}
   \item{DIC}{\code{mean(deviance) + pD}}
 }
 \references{
@@ -153,15 +153,24 @@ sigma.y <- schools$sd
 data <- list ("J", "y", "sigma.y")
 inits <- function(){
     list(theta = rnorm(J, 0, 100), mu.theta = rnorm(1, 0, 100),
-        sigma.theta = runif(1, 0, 100))
+         sigma.theta = runif(1, 0, 100))
 }
+## or alternatively something like:
+# inits <- list(
+#   list(theta = rnorm(J, 0, 90), mu.theta = rnorm(1, 0, 90),
+#        sigma.theta = runif(1, 0, 90)),
+#   list(theta = rnorm(J, 0, 100), mu.theta = rnorm(1, 0, 100),
+#        sigma.theta = runif(1, 0, 100))
+#   list(theta = rnorm(J, 0, 110), mu.theta = rnorm(1, 0, 110),
+#        sigma.theta = runif(1, 0, 110)))
+
 parameters <- c("theta", "mu.theta", "sigma.theta")
 
 \dontrun{
 ## You may need to edit "bugs.directory",
 ## also you need write access in the working directory:
 schools.sim <- bugs(data, inits, parameters, model.file,
-    n.chains = 3, n.iter = 1000,
+    n.chains = 3, n.iter = 5000,
     bugs.directory = "c:/Program Files/WinBUGS14/",
     working.directory = NULL, clearWD = TRUE)
 print(schools.sim)

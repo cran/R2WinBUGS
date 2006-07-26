@@ -29,7 +29,7 @@ bugs.log <- function(file)
     ## "Dbar = post.mean of -2logL; Dhat = -2LogL at post.mean of stochastic nodes"
     ## "\tDbar\tDhat\tpD\tDIC\t"
     
-    DICEnd <- grep("history(", logfile, fixed=TRUE) - 1
+    DICEnd <- grep("history(", logfile, fixed = TRUE) - 1
     ## - 1 to remove
     ## "history(+, ..."
     

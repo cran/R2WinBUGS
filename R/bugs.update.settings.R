@@ -1,6 +1,6 @@
 "bugs.update.settings" <-
 function (n.burnin, bugs.directory){
-  char.burnin <- as.character(n.burnin)
+  char.burnin <- as.character(n.burnin - 1)
   file.copy(file.path(bugs.directory, "System/Rsrc/Registry.odc"),
             file.path(bugs.directory, "System/Rsrc/Registry_Rsave.odc"),
             overwrite = TRUE)

@@ -37,7 +37,7 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
   }
   modelData(data)
   modelCompile(numChains)
-  if(missing(inits)) {
+  if(missing(inits) || is.null(inits)) {
     modelGenInits()
   }
   else {

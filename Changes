@@ -33,7 +33,7 @@ Update 0.2-9 (26 July 2005):
 - bugs has new argument clearWD
 
 Update 1.0-0 (05 Aug 2005):
-- attach.all(), detach.all(), attach.bugs() and detach.bugs() added/changed 
+- attach.all(), detach.all(), attach.bugs() and detach.bugs() added/changed
   more or less according to Andrew Gelman's current bugs.R
 
 Update 1.0-1 (14 Nov 2005):
@@ -52,9 +52,13 @@ Update 2.0-0 (08 May 2006):
 - bugs() and bugs.script() patched for WINEPATH issue
 - bugs.script() changed to save log file in ASCII
 - new function bugs.log() by Gregor Gorjanc
-- new functions as.bugs.array, openbugs and sort.name by 
+- new functions as.bugs.array, openbugs and sort.name by
   Jouni Kerman and Andrew Gelman
 - new function write.model() based on ideas from Jouni Kerman
 
 Update 2.0-1 (26 May 2006):
 - some wine patches for 2.2-0 by Gregor Gorjanc
+
+Update 2.0-2 (26 July 2006):
+- changes for DIC, making use of BUGS internal calculations
+- some doc fixes
