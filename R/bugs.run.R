@@ -12,7 +12,7 @@ if(useWINE && !newWINE) bugs.directory <- win2native(bugs.directory)
                         overwrite = TRUE)))
 ## Search Win*.exe (WinBUGS executable) within bugs.directory
   dos.location <- file.path(bugs.directory, 
-    grep("^Win[[:alnum:]]*\.exe$", list.files(bugs.directory), value = TRUE)[1])
+    grep("^Win[[:alnum:]]*[.]exe$", list.files(bugs.directory), value = TRUE)[1])
   if(!file.exists(dos.location)) 
     stop(paste("WinBUGS executable does not exist in", bugs.directory))
 ## Call Bugs and have it run with script.txt

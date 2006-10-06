@@ -62,3 +62,6 @@ Update 2.0-1 (26 May 2006):
 Update 2.0-2 (26 July 2006):
 - changes for DIC, making use of BUGS internal calculations
 - some doc fixes
+
+Update 2.0-3 (06 October 2006):
+- \\. -> [.] in regular expressions

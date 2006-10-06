@@ -46,8 +46,8 @@ function(data, inits, parameters.to.save, model.file = "model.bug",
   bugs.inits(inits, n.chains, digits)
   if(DIC) parameters.to.save <- c(parameters.to.save, "deviance")
   ## Model files with extension ".bug" need to be renamed to ".txt"
-  if(length(grep("\\.bug$", model.file))){
-    new.model.file <- sub("\\.bug$", "\\.txt", model.file)
+  if(length(grep("[.]bug$", model.file))){
+    new.model.file <- sub("[.]bug$", ".txt", model.file)
     file.copy(model.file, new.model.file, overwrite = TRUE)
     on.exit(try(file.remove(new.model.file)), add = TRUE)
   } else new.model.file <- model.file
