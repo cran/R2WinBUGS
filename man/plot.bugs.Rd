@@ -3,7 +3,7 @@
 \title{Plotting a bugs object}
 \description{Plotting a \code{bugs} object}
 \usage{
-plot.bugs(x, display.parallel = FALSE, ...)
+\method{plot}{bugs}(x, display.parallel = FALSE, ...)
 }
 \arguments{
   \item{x}{an object of class `bugs', see \code{\link{bugs}} for details}

@@ -3,7 +3,7 @@
 \title{Printing a bugs object}
 \description{Printing a \code{bugs} object}
 \usage{
-print.bugs(x, digits.summary = 1, ...)
+\method{print}{bugs}(x, digits.summary = 1, ...)
 }
 \arguments{
   \item{x}{an object of class `bugs', see \code{\link{bugs}} for details}
