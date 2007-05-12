@@ -28,8 +28,18 @@ function (sims, display.parallel, ...){
   long.short <- sims$long.short
   height <- .6
   par (mar=c(0,0,1,0))
+
+  ## if in Splus, suppress printing of warnings during the plotting.
+  ## otherwise a warning is generated 
+  if (!is.R()){
+    warn.settings <- options("warn")[[1]]
+    options (warn = -1)
+  }
   plot (c(0,1), c(-n.roots-.5,-.4),
         ann=FALSE, bty="n", xaxt="n", yaxt="n", type="n")
+  if (!is.R())
+    options(warn = warn.settings)
+
   W <- max(strwidth(rootnames, cex=cex.names))
   B <- (1-W)/3.8
   A <- 1-3.5*B

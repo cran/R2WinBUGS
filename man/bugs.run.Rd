@@ -13,7 +13,8 @@ bugs.run(n.burnin, bugs.directory, WINE = "",
   \item{bugs.directory}{directory that contains the WinBUGS executable}  
   \item{WINE}{name of WINE binary, for Windows emulation}
   \item{useWINE}{logical; attempt to use the WINE emulator to run WinBUGS, 
-    defaults to \code{TRUE} on Windows, and \code{FALSE} otherwise.}
+    defaults to \code{TRUE} on Windows, and \code{FALSE} otherwise.
+    The \code{useWINE = TRUE} option is not available in S-PLUS.}
   \item{newWINE}{set this one to \code{TRUE} for new versions of WINE.} 
 }
 \value{

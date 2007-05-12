@@ -17,7 +17,7 @@ bugs.log(file)
 }
 \details{
 In later releases of R2WiNBUGS, this function is considered to read the relevant data from the log file rather than 
-analysing and calculating the relevant data in R again.
+analysing and calculating the relevant data in R / S-PLUS again.
 }
 \seealso{The main function that generates the log file is \code{\link{bugs}}.}
 \keyword{IO}

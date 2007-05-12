@@ -1,5 +1,7 @@
 ## from Jun Yan's rbugs package, extended
 
+if (is.R()){
+
 ## get drive mapping table from ~/.wine/config
 winedriveMap <- function(config="~/.wine/config") {
   if (!file.exists(config)) return (NULL);
@@ -48,10 +50,16 @@ win2native <- function(x, useWINE=.Platform$OS.type != "windows") { # win -> nat
   else x
 }
 
+} # end if (is.R())
+
 native2win <- function(x, useWINE=.Platform$OS.type != "windows", newWINE=TRUE) { # native -> win
-  if (useWINE && !newWINE) return(winedriveRTr(x))
-  if (useWINE && newWINE) {
-      x <- system(paste(WINEPATH, "-w", x), intern = TRUE)
-      return(gsub("\\\\", "/", x)) ## under wine BUGS cannot use \ or \\
-  } else x
+  if(is.R()){
+      if (useWINE && !newWINE) return(winedriveRTr(x))
+      if (useWINE && newWINE) {
+          x <- system(paste(WINEPATH, "-w", x), intern = TRUE)
+          return(gsub("\\\\", "/", x)) ## under wine BUGS cannot use \ or \\
+      } else x
+  } else { #S-PLUS
+      gsub("\\\\", "/", x)  
+  }
 }

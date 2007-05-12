@@ -30,6 +30,9 @@ function (a, n.chains, trans=NULL, keep.all=FALSE, Rupper.keep=FALSE) {
             confshrink = conv.p$confshrink, n.eff = conv.p$n.eff)
     }
     else if (trans[i]=="logit"){
+    		if (!is.R()){
+    			logit <- function (x) { log(x /(1- x)) }
+    		}
         conv.p <- conv.par(logit(ai), n.chains, Rupper.keep=Rupper.keep)
         conv.p <- list(quantiles = invlogit(conv.p$quantiles),
             confshrink = conv.p$confshrink, n.eff = conv.p$n.eff)

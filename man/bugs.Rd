@@ -1,9 +1,9 @@
 \name{bugs}
 \alias{bugs}
-\title{Run WinBUGS and OpenBUGS from R}
+\title{Run WinBUGS and OpenBUGS from R or S-PLUS}
 \description{The \code{bugs} function takes data and starting values as input.
 It automatically writes a WinBUGS script, calls the model,
-and saves the simulations for easy access in R.}
+and saves the simulations for easy access in R or S-PLUS.}
 \usage{
 bugs(data, inits, parameters.to.save, model.file = "model.bug",
     n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
@@ -57,7 +57,8 @@ bugs(data, inits, parameters.to.save, model.file = "model.bug",
     through function \code{\link{read.bugs}}. (not used if \code{program = "openbugs"})}
   \item{bugs.directory}{directory that contains the WinBUGS executable}
   \item{program}{the program to use, either \code{winbugs}/\code{WinBugs} or \code{openbugs}/\code{OpenBugs},
-    the latter makes use of function \code{\link{openbugs}} and requires the CRAN package \pkg{BRugs}.}
+    the latter makes use of function \code{\link{openbugs}} and requires the CRAN package \pkg{BRugs}.
+    The \code{openbugs}/\code{OpenBugs} choice is not available in S-PLUS.}
   \item{working.directory}{sets working directory during execution of this function;
     WinBUGS' in- and output will be stored in this directory;
     if \code{NULL}, the current working directory is chosen.}
@@ -69,7 +70,8 @@ bugs(data, inits, parameters.to.save, model.file = "model.bug",
   \item{useWINE}{logical; attempt to use the WINE emulator to run WinBUGS, 
     defaults to \code{TRUE} on Windows, and \code{FALSE} otherwise.
     If WINE is used, the arguments \code{bugs.directory} and \code{working.directory} must be given in form of Linux paths
-    rather than Windows paths (if not \code{NULL}).}
+    rather than Windows paths (if not \code{NULL}).
+    The \code{useWINE = TRUE} option is not available in S-PLUS.}
   \item{WINE}{character; name of WINE binary file}
   \item{newWINE}{Set this one to \code{TRUE} for new versions of WINE.}
   \item{WINEPATH}{Path the WINE, it is tried hard to get the information automatically if not given.}
@@ -78,12 +80,12 @@ bugs(data, inits, parameters.to.save, model.file = "model.bug",
 To run:
 \enumerate{
 \item Write a WinBUGS model in a ASCII file.
-\item Go into R.
+\item Go into R / S-PLUS.
 \item Prepare the inputs to the \code{bugs} function and run it (see Example).
-\item A WinBUGS window will pop up amd R will freeze up. The model
+\item A WinBUGS window will pop up and R / S-PLUS will freeze up. The model
     will now run in WinBUGS. It might take awhile. You will see
     things happening in the Log window within WinBUGS. When WinBugs
-    is done, its window will close and R will work again.
+    is done, its window will close and R / S-PLUS will work again.
 \item If an error message appears, re-run with \code{debug = TRUE}.
 }}
 \value{

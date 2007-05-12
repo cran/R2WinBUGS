@@ -1,6 +1,7 @@
 "bugs.plot.summary" <-
 function (sims, ...){
   DIC <- sims$is.DIC
+  
   if (.Device=="windows" ||
       (.Device=="null device" && options("device")=="windows")){
     cex.names <- .7
@@ -29,7 +30,11 @@ function (sims, ...){
     J[J==max(J)] <- max(J)-1
     total <- ceiling(sum(J+.5))
   }
-  pos <- -1
+  if (is.R()){
+    pos <- -1
+  } else {
+    pos <- -1.5
+  }
   ypos <- NULL
   id <- NULL
   ystart <- NULL
@@ -39,13 +44,25 @@ function (sims, ...){
   ystart <- numeric(n.roots)
   for (k in 1:n.roots){
     ystart[k] <- pos
-    ypos <- c(ypos, pos - seq(0, J[k]-1))
+    if (is.R()) {
+        ypos <- c(ypos, pos - seq(0, J[k]-1))
+    } else {
+        # In S-PLUS, increase the vertical spacing
+        ypos <- c(ypos, pos - 1.5*seq(0, J[k]-1))
+    }
     id <- c(id, 1:J[k])
-    pos <- pos - J[k] -.5
+    if (is.R()) {
+        pos <- pos - J[k] -.5
+    } else {
+        pos <- pos - 1.5*J[k] -0.75
+    }
     if (k>1) jj <- c(jj, sum(J0[1:(k-1)]) + (1:J[k]))
   }
-  bottom <- min(ypos)-1  
-  
+  if (is.R()){
+    bottom <- min(ypos)-1  
+  } else {
+    bottom <- min(ypos)-1.5  
+  }
   med <- numeric(sum(J))
   i80 <- matrix( , sum(J), 2)
   i80.chains <- array (NA, c(sum(J), n.chains, 2))
@@ -61,8 +78,17 @@ function (sims, ...){
   a <- -b * p.rng[1]
   
   par (mar=c(0,0,1,3))
+  # if in Splus, suppress printing of warnings during the plotting.
+  # otherwise a warning is generated 
+  if (!is.R()){
+    warn.settings <- options("warn")[[1]]
+    options (warn = -1)
+  }
   plot (c(0,1), c(min(bottom, -max.length)-3,2.5),
         ann=FALSE, bty="n", xaxt="n", yaxt="n", type="n")
+  if (!is.R())
+    options(warn = warn.settings)
+
   W <- max(strwidth(unlist(dimnames(summ)[[1]]), cex=cex.names))
   B <- (1-W)/3.6
   A <- 1-3.5*B
@@ -100,7 +126,16 @@ function (sims, ...){
   for (j in 1:sum(J)){
     name <- dimnames(summ)[[1]][jj[j]]
     if (id[j]==1)
-      text (0, ypos[j], name, adj=0, cex=cex.names)
+      if (is.R()) {
+        text (0, ypos[j], name, adj=0, cex=cex.names)
+      } else {
+        # in S-PLUS, strwidth is an upper bound on the length of the string,
+        # so we must align the brackets differently than in R
+        pos <- as.vector(regexpr("[[]", name))
+        text (0, ypos[j], substring(name, 1, pos-1), adj=0, cex=cex.names)
+        text (strwidth(substring(name,1,pos-1),cex=cex.names),
+            ypos[j], substring(name, pos, nchar(name)), adj=0, cex=cex.names)
+      }
     else {
       pos <- as.vector(regexpr("[[]", name))
       text (strwidth(substring(name,1,pos-1),cex=cex.names),

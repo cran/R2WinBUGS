@@ -21,6 +21,24 @@ function (parameters.to.save, n.chains, n.iter, n.burnin,
   initlist <- paste("inits (", 1:n.chains, ", '", inits, "')\n", sep="")
   savelist <- paste("set (", parameters.to.save, ")\n", sep="")
   redo <- ceiling((n.iter-n.burnin)/(n.thin*bin))
+  
+  if (is.R()){
+    thinUpdateCommand <- paste("thin.updater (", n.thin, ")\n",
+      "update (", ceiling(n.burnin/n.thin), ")\n", sep = "")
+  } else{
+    ## In S-PLUS, the handling of the thinning is done differently than in R.
+    ## bin represents the number of iterations between saves, before thinning,
+    ## where in R it is the number of iterations between saves, after thinning.
+    ## This alternative handling of the thinning is done so that the resulting 
+    ## samples have the correct iteration indexes in the output (coda) files.
+    ## Therefore, if the samples are read into S-PLUS using the coda package,
+    ## the thinning will be correctly labelled in the resulting mcmc object.
+    ## In R, the thinning is always labelled as 1, even if thinning was done.
+  	thinUpdateCommand <- paste("update (", n.burnin, ")\n",
+			"thin.samples (", n.thin, ")\n", sep = "")
+		bin = bin * n.thin
+  }
+  
   cat(
     "display ('log')\n",
     "check ('", native2win(model), "')\n",
@@ -28,8 +46,7 @@ function (parameters.to.save, n.chains, n.iter, n.burnin,
     "compile (", n.chains, ")\n",
     if(is.inits) initlist,
     "gen.inits()\n",
-    "thin.updater (", n.thin, ")\n",
-    "update (", ceiling(n.burnin/n.thin), ")\n",
+    thinUpdateCommand,
      savelist,
     if(DIC) "dic.set()\n",
     rep(

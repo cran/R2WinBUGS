@@ -29,7 +29,7 @@ function (x, n.chains, Rupper.keep = TRUE) {
   B <- n*var(xdot)
   varW <- var(s2)/m
   varB <- B^2 * 2/(m-1)
-  covWB <- (n/m)*(cov(s2,xdot^2) - 2*muhat*cov(s2,xdot))
+  covWB <- (n/m)*(var(s2, xdot^2) - 2*muhat*var(s2, xdot))
   sig2hat <- ((n-1)*W + B)/n
 
 # Posterior interval post.range combines all uncertainties

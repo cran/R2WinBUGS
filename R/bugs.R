@@ -10,17 +10,23 @@ function(data, inits, parameters.to.save, model.file = "model.bug",
     clearWD = FALSE, useWINE = .Platform$OS.type != "windows", WINE = Sys.getenv("WINE"),
     newWINE = FALSE, WINEPATH = NULL){
     
-  ## If OpenBUGS, we only call openbugs() and exit...
   program <- match.arg(program)
   if (program %in% c("openbugs", "OpenBugs"))
-    return(openbugs(data, inits, parameters.to.save, model.file,
-      n.chains, n.iter, n.burnin, n.thin, DIC, bugs.directory,
-      working.directory, digits))
-
+    if (is.R()){
+        ## If OpenBUGS, we only call openbugs() and exit...
+        return(openbugs(data, inits, parameters.to.save, model.file,
+          n.chains, n.iter, n.burnin, n.thin, DIC, bugs.directory,
+          working.directory, digits))
+    } else {
+        stop ("OpenBUGS is not yet available in S-PLUS")
+    }
   ## Checking number of inits, which is NOT save here:
   if(!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains))
     stop("Number of initialized chains (length(inits)) != n.chains")
-  if (useWINE) {  # attempt to find wine and winepath
+  if(useWINE) {     
+    if (!is.R())
+        stop ("Non-Windows platforms not yet supported in R2WinBUGS for S-PLUS")
+    ## attempt to find wine and winepath
     if (!nchar(WINE)) {
         WINE <- system("locate wine | grep bin/wine$", intern = TRUE)
         WINE <- WINE[length(WINE)]
@@ -31,7 +37,7 @@ function(data, inits, parameters.to.save, model.file = "model.bug",
         WINEPATH <- WINEPATH[length(WINEPATH)]
     }
     if (!length(WINEPATH)) stop("couldn't locate WINEPATH binary")
-  }
+    }
   if(!is.null(working.directory)){
       savedWD <- getwd()
       setwd(working.directory)
@@ -59,8 +65,13 @@ function(data, inits, parameters.to.save, model.file = "model.bug",
   if(codaPkg)
     return(file.path(getwd(), paste("coda", 1:n.chains, ".txt", sep="")))
 
-  sims <- c(bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC),
-    model.file = model.file, is.DIC = !is.null(DIC), program = program)
+  if (is.R()){
+    sims <- c(bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC),
+        model.file = model.file, is.DIC = !is.null(DIC), program = program)
+  } else {
+    sims <- c(bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC),
+        model.file = model.file, is.DIC = DIC, program = program)
+  }
   if(clearWD)
     file.remove(c("data.txt", "log.odc", "log.txt", "codaIndex.txt",
         paste("inits", 1:n.chains, ".txt", sep=""),

@@ -1,15 +1,24 @@
 "bugs.run" <-
     function(n.burnin, bugs.directory, WINE = "", 
              useWINE = .Platform$OS.type != "windows", newWINE = TRUE){
-
+    
+if(useWINE && !is.R())
+    stop ("Non-Windows platforms not yet supported in R2WinBUGS for S-PLUS")    
 if(useWINE && !newWINE) bugs.directory <- win2native(bugs.directory)
 
 ## Update the lengths of the adaptive phases in the Bugs updaters
   try(bugs.update.settings(n.burnin, bugs.directory))
 ## Return the lengths of the adaptive phases to their original settings
-  on.exit(try(file.copy(file.path(bugs.directory, "System/Rsrc/Registry_Rsave.odc"),
-                        file.path(bugs.directory, "System/Rsrc/Registry.odc"),
-                        overwrite = TRUE)))
+  if (is.R()){
+        on.exit(try(file.copy(file.path(bugs.directory, "System/Rsrc/Registry_Rsave.odc"), 
+            file.path(bugs.directory, "System/Rsrc/Registry.odc"), 
+            overwrite = TRUE)))
+    } else {
+        on.exit(try(splus.file.copy(file.path(bugs.directory, "System/Rsrc/Registry_Rsave.odc"), 
+            file.path(bugs.directory, "System/Rsrc/Registry.odc"), 
+            overwrite = TRUE)))
+    }
+        
 ## Search Win*.exe (WinBUGS executable) within bugs.directory
   dos.location <- file.path(bugs.directory, 
     grep("^Win[[:alnum:]]*[.]exe$", list.files(bugs.directory), value = TRUE)[1])
@@ -26,9 +35,15 @@ if(useWINE && !newWINE) bugs.directory <- win2native(bugs.directory)
   if(temp == -1)
       stop("Error in bugs.run().\nCheck that WinBUGS is in the specified directory.")
 ## Stop and print an error message if Bugs did not run correctly
-  if (length(grep("Bugs did not run correctly",
-    scan("coda1.txt", character(), quiet=TRUE, sep="\n"))) > 0)
-      stop("Look at the log file and\ntry again with debug=TRUE and figure out what went wrong within Bugs.")
+  if(is.R()) {
+      if(length(grep("Bugs did not run correctly",
+                     scan("coda1.txt", character(), quiet=TRUE, sep="\n"))) > 0)
+          stop("Look at the log file and\ntry again with debug=TRUE and figure out what went wrong within Bugs.")
+  } else {
+      if (length(grep("Bugs did not run correctly",
+                      scan("coda1.txt", character(), sep="\n"))) > 0)
+          stop("Look at the log file and\ntry again with debug=TRUE and figure out what went wrong within Bugs.")
+  }
 }
 
 

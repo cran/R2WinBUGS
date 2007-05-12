@@ -71,9 +71,11 @@ as.bugs.array <- function(sims.array, model.file=NULL, program=NULL, DIC=FALSE, 
   summary <- monitor(sims.array, n.chains, keep.all = TRUE)
   last.values <- as.list(numeric(n.chains))
   for (i in 1:n.chains) {
-    n.roots.0 <- if (!is.null(DIC)) 
-        n.roots - 1
-    else n.roots
+    if (is.R()) {
+        n.roots.0 <- if(!is.null(DIC)) n.roots - 1 else n.roots
+    } else {
+        n.roots.0 <- if(DIC) n.roots - 1 else n.roots
+    }
     last.values[[i]] <- as.list(numeric(n.roots.0))
     names(last.values[[i]]) <- root.short[1:n.roots.0]
     for (j in 1:n.roots.0) {
@@ -111,6 +113,11 @@ as.bugs.array <- function(sims.array, model.file=NULL, program=NULL, DIC=FALSE, 
     }
   }
   summary <- summary[rank.long, ]
+    if (is.R())
+        is.DIC = !is.null(DIC)
+    else
+        is.DIC = DIC
+        
   all <- list(n.chains = n.chains, n.iter = n.iter, n.burnin = n.burnin, 
     n.thin = n.thin, n.keep = n.keep, n.sims = n.sims,
     sims.array = sims.array[,,rank.long,drop = FALSE], sims.list = sims.list, 
@@ -118,7 +125,7 @@ as.bugs.array <- function(sims.array, model.file=NULL, program=NULL, DIC=FALSE, 
     sd = summary.sd, median = summary.median, root.short = root.short, 
     long.short = long.short, dimension.short = dimension.short, 
     indexes.short = indexes.short, last.values = last.values, program=program,
-    model.file=model.file, is.DIC=!is.null(DIC), DIC=DIC)
+    model.file=model.file, is.DIC=is.DIC, DIC=DIC)
   if(sum(DIC)) {
     deviance <- all$sims.array[, , dim(sims.array)[3], drop = FALSE]
     dim(deviance) <- dim(deviance)[1:2]

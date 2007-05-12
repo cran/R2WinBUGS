@@ -1,10 +1,18 @@
 "bugs.sims" <-
 function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
-# Read the simulations from Bugs into R, format them, and monitor convergence
+## Read the simulations from Bugs into R, format them, and monitor convergence
   sims.files <- paste ("coda", 1:n.chains, ".txt", sep="")
-  index <- read.table ("codaIndex.txt", header=FALSE, sep="\t")
-  parameter.names <- as.vector(index[,1])
-  n.keep <- index[1,3] - index[1,2] + 1
+  index <- read.table("codaIndex.txt", header = FALSE, sep = "\t")    # read in the names of the parameters and the indices of their samples
+  ## in Splus, read.table interprets the first row of the file as row names, 
+  ## while in R it does not
+  if(is.R()) {
+      parameter.names <- as.vector(index[, 1])
+      n.keep <- index[1, 3] - index[1, 2] + 1
+  }
+  else {
+      parameter.names <- row.names(index)
+      n.keep <- index[1, 2] - index[1, 1] + 1
+  }
   n.parameters <- length(parameter.names)
   n.sims <- n.keep*n.chains
   sims <- matrix( , n.sims, n.parameters)
@@ -50,7 +58,9 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
   rank.long <- unlist(long.short)
 
   for (i in 1:n.chains){
-    sims.i <- scan (sims.files[i], quiet=TRUE) [2*(1:(n.keep*n.parameters))]
+        if(is.R())
+            sims.i <- scan(sims.files[i], quiet = TRUE)[2 * (1:(n.keep * n.parameters))]
+        else sims.i <- scan(sims.files[i])[2 * (1:(n.keep * n.parameters))]
     sims[(n.keep*(i-1)+1):(n.keep*i), ] <- sims.i
     sims.array[,i,] <- sims.i
   }
@@ -112,6 +122,8 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
      LOG <- bugs.log("log.txt")$DIC
      if(any(is.na(LOG))){
         deviance <- all$sims.array[, , dim(sims.array)[3], drop = FALSE]
+        if(!is.R())
+            dimnames(deviance) <- NULL
         dim(deviance) <- dim(deviance)[1:2]
         pD <- numeric(n.chains)
         DIC <- numeric(n.chains)
@@ -127,4 +139,10 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
       }
   }
   return(all)
+}
+
+if (!is.R()){
+    .subset <- function(x, index){
+        return (x[index])
+    }
 }

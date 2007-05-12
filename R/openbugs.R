@@ -1,3 +1,5 @@
+if (is.R()){
+
 openbugs <- function(data, inits, parameters.to.save, model.file="model.txt", 
   n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2), 
   n.thin = max(1, floor(n.chains *(n.iter - n.burnin)/1000)), 
@@ -82,4 +84,6 @@ sort.name <- function(a, b){
   bracket.pos <- regexpr("\\[", a)
   a.stem <- substr(a, 1, ifelse(bracket.pos>0, bracket.pos-1, nchar(a)))
   return(a[order(match(a.stem, b))])
+}
+
 }

@@ -2,7 +2,7 @@
 \alias{bugs.sims}
 \title{WinBUGS output reader - intended for internal use only}
 \description{
-Reads simulations from WinBUGS into R, formats them, monitors convergence,
+Reads simulations from WinBUGS into R/ S-PLUS, formats them, monitors convergence,
 performs convergence checks, and computes medians and quantiles. Intended for internal use only.}
 \usage{
 bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, 
