@@ -70,5 +70,7 @@ Update 2.0-4 (01 November 2006):
 - print.bugs / plot.bugs documentation fixes
 - write.model() fix
 
-Update 2.1-2 (12 May 2007):
+Update 2.1-3 (13 May 2007):
 - Ported to S-PLUS by Insightful Corp.
+- some fixes for codetools checks
+

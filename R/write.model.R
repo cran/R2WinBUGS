@@ -21,8 +21,6 @@ write.model <- function(model, con = "model.bug")
   writeLines(model.text, con = con)
 }
 
-if (!is.R()){
-
 replaceScientificNotation <- function(text){
 ## Change the format of any numbers in "text" that are in S-PLUS 
 ## scientific notation to WinBUGS scientific notation
@@ -31,7 +29,7 @@ replaceScientificNotation <- function(text){
   ## Find the first instance
   ## Note that the number may or may not have a decimal point.
   sciNoteLoc <- regexpr("[0-9]*\\.{0,1}[0-9]*e\\+0[0-9]{2}", text)
-	
+    
   ## For every instance, replace the number
   while(sciNoteLoc > -1){
     sciNoteEnd <- sciNoteLoc + attr(sciNoteLoc, "match.length")-1
@@ -54,4 +52,3 @@ replaceScientificNotation <- function(text){
 
   text
 }
-} ## ends if (!is.R())

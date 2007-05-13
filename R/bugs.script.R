@@ -17,7 +17,8 @@ function (parameters.to.save, n.chains, n.iter, n.burnin,
   coda  <- file.path(working.directory, "coda")
   logfile <- file.path(working.directory, "log.odc")
   logfileTxt <- file.path(working.directory, "log.txt")
-  inits <- sapply(paste(working.directory, "/inits", 1:n.chains, ".txt", sep=""), native2win)
+  inits <- sapply(paste(working.directory, "/inits", 1:n.chains, ".txt", sep=""), 
+                  function(x) native2win(x, , WINEPATH = WINEPATH))
   initlist <- paste("inits (", 1:n.chains, ", '", inits, "')\n", sep="")
   savelist <- paste("set (", parameters.to.save, ")\n", sep="")
   redo <- ceiling((n.iter-n.burnin)/(n.thin*bin))
@@ -34,15 +35,15 @@ function (parameters.to.save, n.chains, n.iter, n.burnin,
     ## Therefore, if the samples are read into S-PLUS using the coda package,
     ## the thinning will be correctly labelled in the resulting mcmc object.
     ## In R, the thinning is always labelled as 1, even if thinning was done.
-  	thinUpdateCommand <- paste("update (", n.burnin, ")\n",
-			"thin.samples (", n.thin, ")\n", sep = "")
-		bin = bin * n.thin
+    thinUpdateCommand <- paste("update (", n.burnin, ")\n",
+            "thin.samples (", n.thin, ")\n", sep = "")
+        bin = bin * n.thin
   }
   
   cat(
     "display ('log')\n",
-    "check ('", native2win(model), "')\n",
-    "data ('", native2win(data), "')\n",
+    "check ('", native2win(model, WINEPATH=WINEPATH), "')\n",
+    "data ('", native2win(data, WINEPATH=WINEPATH), "')\n",
     "compile (", n.chains, ")\n",
     if(is.inits) initlist,
     "gen.inits()\n",
@@ -51,12 +52,12 @@ function (parameters.to.save, n.chains, n.iter, n.burnin,
     if(DIC) "dic.set()\n",
     rep(
     c("update (", formatC(ceiling(bin), format = "d"), ")\n",
-    "coda (*, '", native2win(coda), "')\n"),redo),
+    "coda (*, '", native2win(coda, WINEPATH=WINEPATH), "')\n"),redo),
     "stats (*)\n",
     if(DIC) "dic.stats()\n",
-    "history (*, '", native2win(history), "')\n",
-    "save ('", native2win(logfile), "')\n", 
-    "save ('", native2win(logfileTxt), "')\n",
+    "history (*, '", native2win(history, WINEPATH=WINEPATH), "')\n",
+    "save ('", native2win(logfile, WINEPATH=WINEPATH), "')\n", 
+    "save ('", native2win(logfileTxt, WINEPATH=WINEPATH), "')\n",
     file=script, sep="", append=FALSE)
   if (!debug) cat ("quit ()\n", file=script, append=TRUE)
   sims.files <- paste ("coda", 1:n.chains, ".txt", sep="")

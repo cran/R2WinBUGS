@@ -33,43 +33,43 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
     model <- readLines(modelFile)
     try(writeLines(model, modelFile))
   }
-  modelCheck(modelFile)
+  BRugs::modelCheck(modelFile)
   if(!(is.vector(data) && is.character(data) && all(file.exists(data)))) {
-    data <- bugsData(data, digits = digits)
+    data <- BRugs::bugsData(data, digits = digits)
   }
-  modelData(data)
-  modelCompile(numChains)
+  BRugs::modelData(data)
+  BRugs::modelCompile(numChains)
   if(missing(inits) || is.null(inits)) {
-    modelGenInits()
+    BRugs::modelGenInits()
   }
   else {
     if(is.list(inits) || is.function(inits) || (is.character(inits) && 
       !any(file.exists(inits)))){
-      inits <- bugsInits(inits = inits, numChains = numChains, digits = digits)
+      inits <- BRugs::bugsInits(inits = inits, numChains = numChains, digits = digits)
     }
-    modelInits(inits)
-    modelGenInits()
+    BRugs::modelInits(inits)
+    BRugs::modelGenInits()
   }
-  samplesSetThin(nThin)
+  BRugs::samplesSetThin(nThin)
 # set the adaptive phases
   adaptivelines <- scan(system.file("OpenBUGS", "Bugs", "Rsrc", "Registry.txt", package="BRugs"), what="character")
   factories <- sub(".adaptivePhase", "",
                     adaptivelines[grep("adaptivePhase",adaptivelines)])
-  sapply(factories, modelSetAP, max(0, nBurnin-1)) 
+  sapply(factories, BRugs::modelSetAP, max(0, nBurnin-1)) 
   
-  modelUpdate(nBurnin)
+  BRugs::modelUpdate(nBurnin)
   if(!is.null(DIC)) {
-    dicSet()
-    on.exit(dicClear(), add = TRUE)
+    BRugs::dicSet()
+    on.exit(BRugs::dicClear(), add = TRUE)
   }
-  samplesSet(parametersToSave)
-  modelUpdate(nIter)
-  params <- sort.name(samplesMonitors("*"), parametersToSave)
-  samples <- sapply(params, samplesSample)
+  BRugs::samplesSet(parametersToSave)
+  BRugs::modelUpdate(nIter)
+  params <- sort.name(BRugs::samplesMonitors("*"), parametersToSave)
+  samples <- sapply(params, BRugs::samplesSample)
   n.saved.per.chain <- nrow(samples)/numChains
   samples.array <- array(samples, c(n.saved.per.chain, numChains, ncol(samples)))
   dimnames(samples.array)[[3]] <- dimnames(samples)[[2]]
-  if(!is.null(DIC)) DIC <- dicStats()
+  if(!is.null(DIC)) DIC <- BRugs::dicStats()
   bugs.output <- as.bugs.array(samples.array, modelFile, program="OpenBUGS", 
     n.iter=n.iter, n.burnin=n.burnin, n.thin=n.thin, DIC=DIC)
   return(bugs.output)

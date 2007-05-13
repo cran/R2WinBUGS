@@ -1,13 +1,13 @@
 "bugs.update.settings" <-
 function (n.burnin, bugs.directory){
-		
+        
   char.burnin <- as.character(n.burnin - 1)
-	if (is.R()){
-  	file.copy(file.path(bugs.directory, "System/Rsrc/Registry.odc"),
+    if (is.R()){
+    file.copy(file.path(bugs.directory, "System/Rsrc/Registry.odc"),
             file.path(bugs.directory, "System/Rsrc/Registry_Rsave.odc"),
            overwrite = TRUE)
   } else {
-  	splus.file.copy(file.path(bugs.directory, "System/Rsrc/Registry.odc"),
+    splus.file.copy(file.path(bugs.directory, "System/Rsrc/Registry.odc"),
             file.path(bugs.directory, "System/Rsrc/Registry_Rsave.odc"),
            overwrite = TRUE)
   }
@@ -15,19 +15,19 @@ function (n.burnin, bugs.directory){
                 "character", 400, size = 1, endian = "little")
   locale <- Sys.getlocale("LC_CTYPE")
   Sys.setlocale("LC_CTYPE", "C")
-	if (is.R())  
-		info <- registry[regexpr("Int", registry, fixed = TRUE, useBytes = TRUE) > 0]
-	else  
-		info <- registry[regexpr("Int", registry, fixed = TRUE) > 0]
+    if (is.R())  
+        info <- registry[regexpr("Int", registry, fixed = TRUE, useBytes = TRUE) > 0]
+    else  
+        info <- registry[regexpr("Int", registry, fixed = TRUE) > 0]
   while(regexpr("\r", info) > 0){
     newline <- regexpr("\r", info)
     info <- substring(info, newline + 1)
     line <- substring(info, 1, regexpr("\r", info) - 1)
     if(regexpr("AdaptivePhase", line) > 0){
       if (is.R())
-      	numpos <- regexpr("Int", line, fixed = TRUE, useBytes = TRUE) + 4
+        numpos <- regexpr("Int", line, fixed = TRUE, useBytes = TRUE) + 4
       else
-      	numpos <- regexpr("Int", line, fixed = TRUE) + 4
+        numpos <- regexpr("Int", line, fixed = TRUE) + 4
 
       num <- substring(line, numpos)
       if (as.numeric(num) > n.burnin){
@@ -43,8 +43,6 @@ function (n.burnin, bugs.directory){
       file.path(bugs.directory, "System/Rsrc/Registry.odc"), endian = "little")
 }
 
-if (!is.R()){
-
 "splus.file.copy"<-
 function(from, to, overwrite = FALSE)
 {
@@ -57,5 +55,3 @@ function(from, to, overwrite = FALSE)
                 size = 1)
         invisible(z)
 }
-
-} #ends if (!is.R())

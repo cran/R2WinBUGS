@@ -52,7 +52,7 @@ win2native <- function(x, useWINE=.Platform$OS.type != "windows") { # win -> nat
 
 } # end if (is.R())
 
-native2win <- function(x, useWINE=.Platform$OS.type != "windows", newWINE=TRUE) { # native -> win
+native2win <- function(x, useWINE=.Platform$OS.type != "windows", newWINE=TRUE, WINEPATH=NULL) { # native -> win
   if(is.R()){
       if (useWINE && !newWINE) return(winedriveRTr(x))
       if (useWINE && newWINE) {

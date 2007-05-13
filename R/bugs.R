@@ -60,7 +60,7 @@ function(data, inits, parameters.to.save, model.file = "model.bug",
   bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
     new.model.file, debug=debug, is.inits=!is.null(inits),
     bin = bin, DIC = DIC, useWINE = useWINE, newWINE = newWINE, WINEPATH = WINEPATH)
-  bugs.run(n.burnin, bugs.directory, WINE = WINE, useWINE = useWINE)
+  bugs.run(n.burnin, bugs.directory, WINE = WINE, useWINE = useWINE, WINEPATH = WINEPATH)
 
   if(codaPkg)
     return(file.path(getwd(), paste("coda", 1:n.chains, ".txt", sep="")))

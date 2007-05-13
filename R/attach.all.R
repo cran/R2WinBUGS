@@ -29,10 +29,7 @@ attach.bugs <- function (x, overwrite = NA){
     detach("bugs.sims")}
   x$sims.list$n.sims <- x$n.sims   # put n.sims into sims.list for convenience
   r2 <- attach.all(x$sims.list, overwrite = overwrite, name = "bugs.sims")
-  if (is.R())
-    invisible (bugs.sims = r2)
-  else 
-    invisible (r2)
+  invisible (r2)
 }
 
 detach.all <- function(name = "attach.all"){

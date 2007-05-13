@@ -1,6 +1,7 @@
 "bugs.run" <-
     function(n.burnin, bugs.directory, WINE = "", 
-             useWINE = .Platform$OS.type != "windows", newWINE = TRUE){
+             useWINE = .Platform$OS.type != "windows", 
+             newWINE = TRUE, WINEPATH = NULL){
     
 if(useWINE && !is.R())
     stop ("Non-Windows platforms not yet supported in R2WinBUGS for S-PLUS")    
@@ -26,7 +27,7 @@ if(useWINE && !newWINE) bugs.directory <- win2native(bugs.directory)
     stop(paste("WinBUGS executable does not exist in", bugs.directory))
 ## Call Bugs and have it run with script.txt
   bugsCall <- paste("\"", dos.location, "\" /par \"",
-                    native2win(file.path(getwd(), "script.txt"), newWINE = newWINE),
+                    native2win(file.path(getwd(), "script.txt"), newWINE = newWINE, WINEPATH = WINEPATH),
                     "\"", sep = "")
   if (useWINE)
     bugsCall <- paste(WINE, bugsCall)
