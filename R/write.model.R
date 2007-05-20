@@ -40,7 +40,7 @@ replaceScientificNotation <- function(text){
 
   ## Then, handle the negative exponents
   ## Find the first instance
-  sciNoteLoc <- regexpr("[0-9]*.{0,1}[0-9]*e\\-0[0-9]{2}", text)
+  sciNoteLoc <- regexpr("[0-9]*\\.{0,1}[0-9]*e\\-0[0-9]{2}", text)
 
   ## For every instance, replace the number
   while(sciNoteLoc > -1){

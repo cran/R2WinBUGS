@@ -29,10 +29,11 @@ output. Examples are given to demonstrate the usage of this package.
 \Plainkeywords{R, WinBUGS, interface, MCMC}
 
 \begin{document}
-This paper has been published by the Journal of Statistical Software:\\
+An earlier version of this vignette has been published by the Journal of Statistical Software:\\
 Sturtz S, Ligges U, Gelman A (2005):
 ``\RW{}: A Package for Running \WinBUGS{} from \R{}.''
 {\em Journal of Statistical Software}, 12(3), 1--16.
+
 
 \section{Introduction}\label{Introduction}
 The usage of Markov chain Monte Carlo (MCMC) methods became very popular within the last decade. \WinBUGS{}

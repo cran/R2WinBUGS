@@ -24,6 +24,16 @@ function(data, dir = getwd(), digits = 5){
 }
 
 
+if(is.R()){
+    ## need some fake functions for codetools
+    toSingleS4 <- function(...)
+      stop("This function is not intended to be called in R!")
+    "writeDatafileS4" <- toSingleS4
+} else {
+
+### The rest of this file is for S-PLUS only...
+
+
 "writeDatafileS4" <- 
 #
 # Writes to file "towhere" text defining a list containing "DATA" in a form compatable with WinBUGS.
@@ -223,4 +233,6 @@ function(x)
             1), sep = "")
     }
     x
+}
+
 }

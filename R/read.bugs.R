@@ -1,7 +1,7 @@
 read.bugs <- function(codafiles, ...){
-    if(!require(coda))
+    if(!is.R() && !require("coda"))
         stop("package 'coda' is required to use this function")
-    coda::mcmc.list(lapply(codafiles, coda::read.coda, 
+    mcmc.list(lapply(codafiles, read.coda, 
                      index.file = file.path(dirname(codafiles[1]), "codaIndex.txt"), 
                      ...))
 }

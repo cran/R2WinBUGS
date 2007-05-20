@@ -1,3 +1,5 @@
+importFrom(coda, mcmc.list, read.coda)
+
 export(bugs,
        attach.all,
        detach.all,
@@ -12,3 +14,4 @@ export(bugs,
 
 S3method(print, bugs)
 S3method(plot, bugs)
+

@@ -18,6 +18,9 @@ attach.all <- function(x, overwrite = NA, name = "attach.all"){
     if(overwrite) remove(list=rem, envir=.GlobalEnv)
     attach(x, name=name)
   } else {
+    ## next line is a dirty trick for R'd codetools check in R-2.5.0
+    ## (should be removed after codetoold have been improved):
+    attach.default <- get("attach.default") 
     attach.default(x, name = name)
   }
 }

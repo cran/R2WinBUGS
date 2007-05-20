@@ -29,8 +29,6 @@
 %% commands
 \let\code=\texttt
 \let\proglang=\textsf
-\newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
-\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
 \newcommand{\E}{\mathsf{E}}
 \newcommand{\VAR}{\mathsf{VAR}}
 \newcommand{\COV}{\mathsf{COV}}
