@@ -1,11 +1,13 @@
 \name{bugs.sims}
 \alias{bugs.sims}
-\title{WinBUGS output reader - intended for internal use only}
-\description{
-Reads simulations from WinBUGS into R/ S-PLUS, formats them, monitors convergence,
-performs convergence checks, and computes medians and quantiles. Intended for internal use only.}
+\title{WinBUGS output reader}
+
+\description{Reads simulations from \pkg{WinBUGS} into \R or S-PLUS,
+  formats them, monitors convergence, performs convergence checks, and
+  computes medians and quantiles - intended for internal use.}
+
 \usage{
-bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin, 
+bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
     DIC = TRUE)
 }
 \arguments{
@@ -16,8 +18,8 @@ bugs.sims(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   \item{n.thin}{size of thinning parameter}
   \item{DIC}{calculation of DIC}
 }
-\value{
-Returns the same values as \code{\link{bugs}}.
-}
+\value{Returns the same values as \code{\link{bugs}}.}
 \seealso{The main function to be called by the user is \code{\link{bugs}}.}
 \keyword{internal}
+\keyword{IO}
+\keyword{file}

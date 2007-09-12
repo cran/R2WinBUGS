@@ -18,5 +18,5 @@ function (a){
     indexes <- as.numeric(unlist(strsplit(a, ",")))
     dimension <- length(indexes)
   }
-  return (list (root=root, dimension=dimension, indexes=indexes))
+  list(root=root, dimension=dimension, indexes=indexes)
 }

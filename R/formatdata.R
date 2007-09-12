@@ -20,5 +20,5 @@ function (datalist){
     }
     datalist.tofile <- paste("list(", paste(unlist(datalist.string), 
         collapse = ", "), ")", sep = "")
-    return(datalist.tofile)
+    datalist.tofile
 }

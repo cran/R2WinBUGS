@@ -7,7 +7,8 @@
 }
 \arguments{
   \item{x}{an object of class `bugs', see \code{\link{bugs}} for details}
-  \item{digits.summary}{rounding for tabular output on the console (default is to round to 1 decimal place)}
+  \item{digits.summary}{rounding for tabular output on the console
+    (default is to round to 1 decimal place)}
   \item{...}{further arguments to \code{\link{print}}}
 }
 \seealso{\code{\link{bugs}}}

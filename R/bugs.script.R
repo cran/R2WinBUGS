@@ -1,66 +1,67 @@
 "bugs.script" <-
-function (parameters.to.save, n.chains, n.iter, n.burnin,
-    n.thin, model.file, debug=FALSE, is.inits, bin,
-    DIC = FALSE, useWINE = FALSE, newWINE = FALSE, WINEPATH = NULL){
-### Write file script.txt for Bugs to read
-###  if (n.chains<2) stop ("n.chains must be at least 2")
+  function(parameters.to.save, n.chains, n.iter, n.burnin,
+           n.thin, model.file, debug=FALSE, is.inits, bin,
+           DIC=FALSE, useWINE=.Platform$OS.type != "windows",
+           newWINE=TRUE, WINEPATH=NULL)
+{
+  ## Write file script.txt for Bugs
 
   if((ceiling(n.iter/n.thin) - ceiling(n.burnin/n.thin)) < 2)
     stop ("(n.iter-n.burnin)/n.thin must be at least 2")
   working.directory <- getwd()
   script <- "script.txt"
-  model <- if(length(grep("\\\\", model.file)) || length(grep("/", model.file))){
-    model.file
-  } else file.path(working.directory, model.file)
+
+  test <- length(grep("\\\\", model.file)) || length(grep("/", model.file))
+  model <- ifelse(test, model.file, file.path(working.directory, model.file))
+  model <- native2win(model, useWINE=useWINE, newWINE=newWINE, WINEPATH=WINEPATH)
+
   data <- file.path(working.directory, "data.txt")
-  history <- file.path(working.directory, "history.odc")
+  data <- native2win(data, useWINE=useWINE, newWINE=newWINE, WINEPATH=WINEPATH)
+
   coda  <- file.path(working.directory, "coda")
-  logfile <- file.path(working.directory, "log.odc")
-  logfileTxt <- file.path(working.directory, "log.txt")
-  inits <- sapply(paste(working.directory, "/inits", 1:n.chains, ".txt", sep=""), 
-                  function(x) native2win(x, , WINEPATH = WINEPATH))
+  coda <- native2win(coda, useWINE=useWINE, newWINE=newWINE, WINEPATH=WINEPATH)
+
+  logFile <- file.path(working.directory, "log.odc")
+  logFile <- native2win(logFile, useWINE=useWINE, newWINE=newWINE, WINEPATH=WINEPATH)
+  logFileTxt <- file.path(working.directory, "log.txt")
+  logFileTxt <- native2win(logFileTxt, useWINE=useWINE, newWINE=newWINE, WINEPATH=WINEPATH)
+
+  inits <- paste(working.directory, "/inits", 1:n.chains, ".txt", sep="")
+  inits <- sapply(inits, useWINE=useWINE, newWINE=newWINE, WINEPATH=WINEPATH, 
+  	function(x, useWINE, newWINE, WINEPATH) 
+  	{native2win(x, useWINE=useWINE, newWINE=newWINE, WINEPATH=WINEPATH)})
+
   initlist <- paste("inits (", 1:n.chains, ", '", inits, "')\n", sep="")
+
   savelist <- paste("set (", parameters.to.save, ")\n", sep="")
   redo <- ceiling((n.iter-n.burnin)/(n.thin*bin))
-  
-  if (is.R()){
-    thinUpdateCommand <- paste("thin.updater (", n.thin, ")\n",
-      "update (", ceiling(n.burnin/n.thin), ")\n", sep = "")
-  } else{
-    ## In S-PLUS, the handling of the thinning is done differently than in R.
-    ## bin represents the number of iterations between saves, before thinning,
-    ## where in R it is the number of iterations between saves, after thinning.
-    ## This alternative handling of the thinning is done so that the resulting 
-    ## samples have the correct iteration indexes in the output (coda) files.
-    ## Therefore, if the samples are read into S-PLUS using the coda package,
-    ## the thinning will be correctly labelled in the resulting mcmc object.
-    ## In R, the thinning is always labelled as 1, even if thinning was done.
-    thinUpdateCommand <- paste("update (", n.burnin, ")\n",
-            "thin.samples (", n.thin, ")\n", sep = "")
-        bin = bin * n.thin
-  }
-  
+
+  thinUpdate <- paste("thin.updater (", n.thin, ")\n",
+                      "update (", ceiling(n.burnin/n.thin), ")\n", sep="")
+
   cat(
     "display ('log')\n",
-    "check ('", native2win(model, WINEPATH=WINEPATH), "')\n",
-    "data ('", native2win(data, WINEPATH=WINEPATH), "')\n",
+    "check ('", model, "')\n",
+    "data ('", data, "')\n",
     "compile (", n.chains, ")\n",
     if(is.inits) initlist,
     "gen.inits()\n",
-    thinUpdateCommand,
+    thinUpdate,
      savelist,
     if(DIC) "dic.set()\n",
     rep(
-    c("update (", formatC(ceiling(bin), format = "d"), ")\n",
-    "coda (*, '", native2win(coda, WINEPATH=WINEPATH), "')\n"),redo),
+    c("update (", formatC(ceiling(bin), format="d"), ")\n",
+    "coda (*, '", coda, "')\n"),redo),
     "stats (*)\n",
     if(DIC) "dic.stats()\n",
-    "history (*, '", native2win(history, WINEPATH=WINEPATH), "')\n",
-    "save ('", native2win(logfile, WINEPATH=WINEPATH), "')\n", 
-    "save ('", native2win(logfileTxt, WINEPATH=WINEPATH), "')\n",
+    "history (*)\n",
+    "save ('", logFile, "')\n",
+    "save ('", logFileTxt, "')\n",
     file=script, sep="", append=FALSE)
-  if (!debug) cat ("quit ()\n", file=script, append=TRUE)
-  sims.files <- paste ("coda", 1:n.chains, ".txt", sep="")
-  for (i in 1:n.chains) cat ("WinBUGS did not run correctly.\n",
-    file=sims.files[i], append=FALSE)
+
+  if(!debug) cat("quit ()\n", file=script, append=TRUE)
+
+  sims.files <- paste("coda", 1:n.chains, ".txt", sep="")
+  for(i in 1:n.chains)
+    cat("WinBUGS did not run correctly.\n", file=sims.files[i], append=FALSE)
 }

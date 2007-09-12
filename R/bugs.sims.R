@@ -1,9 +1,11 @@
 "bugs.sims" <-
-function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
-## Read the simulations from Bugs into R, format them, and monitor convergence
+function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC=TRUE)
+{
+  ## Read the simulations from Bugs into R, format them, and monitor convergence
   sims.files <- paste ("coda", 1:n.chains, ".txt", sep="")
-  index <- read.table("codaIndex.txt", header = FALSE, sep = "\t")    # read in the names of the parameters and the indices of their samples
-  ## in Splus, read.table interprets the first row of the file as row names, 
+  ## read in the names of the parameters and the indices of their samples
+  index <- read.table("codaIndex.txt", header = FALSE, sep = "\t")
+  ## in Splus, read.table interprets the first row of the file as row names,
   ## while in R it does not
   if(is.R()) {
       parameter.names <- as.vector(index[, 1])
@@ -35,19 +37,19 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
   long.short <- vector(n.roots, mode = "list")
   length.short <- numeric(n.roots)
   ##SS, UL##: Let's optimize the following loops ...
-  for (j in 1:n.roots){
+  for (j in 1:n.roots) {
     long.short[[j]] <- (1:n.parameters)[root.long==root.short[j]]
     length.short[j] <- length(long.short[[j]])
     if (length.short[j]==0)
-      stop (paste ("parameter", root.short[[j]], "is not in the model"))
-    else if (length.short[j]>1){
-      dimension.short[j] <- length(indexes.long[[long.short[[j]][1]]])       
+      stop(paste ("parameter", root.short[[j]], "is not in the model"))
+    else if (length.short[j]>1) {
+      dimension.short[j] <- length(indexes.long[[long.short[[j]][1]]])
       n.indexes.short[[j]] <- numeric(dimension.short[j])
       for (k in 1:dimension.short[j]) n.indexes.short[[j]][k] <- length (
         unique (unlist (lapply (indexes.long[long.short[[j]]], .subset, k))))
       length.short[j] <- prod(n.indexes.short[[j]])
-      if (length(long.short[[j]])!=length.short[j]) stop (paste
-        ("error in parameter", root.short[[j]], "in parameters.to.save"))
+      if (length(long.short[[j]])!=length.short[j])
+        stop(paste("error in parameter", root.short[[j]], "in parameters.to.save"))
       indexes.short[[j]] <- as.list(numeric(length.short[j]))
       for (k in 1:length.short[j])
         indexes.short[[j]][[k]] <- indexes.long[[long.short[[j]][k]]]
@@ -58,9 +60,11 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
   rank.long <- unlist(long.short)
 
   for (i in 1:n.chains){
-        if(is.R())
-            sims.i <- scan(sims.files[i], quiet = TRUE)[2 * (1:(n.keep * n.parameters))]
-        else sims.i <- scan(sims.files[i])[2 * (1:(n.keep * n.parameters))]
+    if(is.R()) {
+      sims.i <- scan(sims.files[i], quiet = TRUE)[2 * (1:(n.keep * n.parameters))]
+    } else {
+      sims.i <- scan(sims.files[i])[2 * (1:(n.keep * n.parameters))]
+    }
     sims[(n.keep*(i-1)+1):(n.keep*i), ] <- sims.i
     sims.array[,i,] <- sims.i
   }
@@ -118,12 +122,12 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
     sd=summary.sd, median=summary.median, root.short=root.short,
     long.short=long.short, dimension.short=dimension.short,
     indexes.short=indexes.short, last.values=last.values)
-  if(DIC){
+  if(DIC) {
+     ## Read DIC from BUGS log
      LOG <- bugs.log("log.txt")$DIC
-     if(any(is.na(LOG))){
+     if(any(is.na(LOG))) { ## Something went wrong --> Use Gelmans tweak
         deviance <- all$sims.array[, , dim(sims.array)[3], drop = FALSE]
-        if(!is.R())
-            dimnames(deviance) <- NULL
+        if(!is.R()) dimnames(deviance) <- NULL
         dim(deviance) <- dim(deviance)[1:2]
         pD <- numeric(n.chains)
         DIC <- numeric(n.chains)
@@ -131,18 +135,16 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC = TRUE){
             pD[i] <- var(deviance[, i])/2
             DIC[i] <- mean(deviance[, i]) + pD[i]
         }
-        all <- c(all, list(pD = mean(pD), DIC = mean(DIC), DICbyR = TRUE))
-      } else {
-        DIC <- LOG[nrow(LOG),4]
-        pD <- LOG[nrow(LOG),3]
-        all <- c(all, list(pD = pD, DIC = DIC, DICbyR = FALSE))
+        all <- c(all, list(isDIC=TRUE, DICbyR=TRUE,
+                           pD=mean(pD), DIC=mean(DIC)))
+      } else { ## Use BUGS calculation of DIC
+        all <- c(all, list(isDIC=TRUE, DICbyR=FALSE,
+                           pD=LOG[nrow(LOG),3], DIC=LOG[nrow(LOG),4]))
       }
+  } else {
+    all <- c(all, isDIC=FALSE)
   }
-  return(all)
+  all
 }
 
-if (!is.R()){
-    .subset <- function(x, index){
-        return (x[index])
-    }
-}
+if(!is.R()) .subset <- function(x, index) x[index]

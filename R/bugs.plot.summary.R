@@ -1,6 +1,6 @@
 "bugs.plot.summary" <-
 function (sims, ...){
-  DIC <- sims$is.DIC
+  isDIC <- sims$isDIC
   
   if (.Device=="windows" ||
       (.Device=="null device" && options("device")=="windows")){
@@ -23,7 +23,7 @@ function (sims, ...){
   n.parameters <- nrow(summ)
  
   J0 <- unlist(lapply(sims$long.short, length))
-  if (DIC) J0 <- J0[1:(length(J0)-1)]  # don't display deviance summaries
+  if (isDIC) J0 <- J0[1:(length(J0)-1)]  # don't display deviance summaries
   J <- J0
   total <- ceiling(sum(J+.5))
   while ((total > max.length) && max(J)>1){### vielleicht optimieren ...
@@ -40,7 +40,7 @@ function (sims, ...){
   ystart <- NULL
   jj <- 1:J[1]
   n.roots <- length(sims$root.short)
-  if (DIC) n.roots <- n.roots-1        # don't display deviance summaries
+  if (isDIC) n.roots <- n.roots-1        # don't display deviance summaries
   ystart <- numeric(n.roots)
   for (k in 1:n.roots){
     ystart[k] <- pos
