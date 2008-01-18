@@ -7,9 +7,9 @@
 \setlength{\textheight}{23.5cm}
 
 \title{\RW{}:\protect\linebreak A Package for Running \WinBUGS{} from \R{}}
-\author{Sibylle Sturtz\thanks{\email{sturtz@statistik.uni-dortmund.de}}\\Fachbereich Statistik\\Universit\"at Dortmund\\Germany
+\author{Sibylle Sturtz\thanks{\email{sturtz@statistik.tu-dortmund.de}}\\Fachbereich Statistik\\Universit\"at Dortmund\\Germany
     \And
-        Uwe Ligges\thanks{\email{ligges@statistik.uni-dortmund.de}}\\Fachbereich Statistik\\Universit\"at Dortmund\\Germany
+        Uwe Ligges\thanks{\email{ligges@statistik.tu-dortmund.de}}\\Fachbereich Statistik\\Universit\"at Dortmund\\Germany
     \And
         Andrew Gelman\thanks{\email{gelman@stat.columbia.edu}}\\Department of Statistics\\Columbia University\\USA
 }

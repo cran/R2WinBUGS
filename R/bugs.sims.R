@@ -92,7 +92,7 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC=TRUE)
            rev(n.indexes.short[[j]])), dimension.short[j]:1)
     }
   }
-  sims <- sims [sample(n.sims),]    # scramble (for convenience in analysis)
+  sims <- sims [sample(n.sims), , drop = FALSE]    # scramble (for convenience in analysis)
   sims.list <- summary.mean <- summary.sd <-  summary.median <- vector(n.roots, mode = "list")
   names(sims.list) <- names(summary.mean) <- names(summary.sd) <- names(summary.median) <- root.short
   for (j in 1:n.roots){

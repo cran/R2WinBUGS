@@ -51,7 +51,7 @@ from deviance values in \code{sims.array}.
 
 \author{Jouni Kerman, \email{kerman@stat.columbia.edu} with modification
   by Andrew Gelman, \email{gelman@stat.columbia.edu}, packaged by Uwe
-  Ligges, \email{ligges@statistik.uni-dortmund.de}.}
+  Ligges, \email{ligges@statistik.tu-dortmund.de}.}
 
 \seealso{\code{\link{bugs}}}
 \keyword{interface}

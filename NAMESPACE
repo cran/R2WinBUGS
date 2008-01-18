@@ -8,6 +8,7 @@ export(bugs,
        bugs.data,
        read.bugs,
        bugs.log,
+       monitor,
        openbugs,
        as.bugs.array,
        write.model)

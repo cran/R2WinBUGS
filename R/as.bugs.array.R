@@ -87,7 +87,7 @@ as.bugs.array <- function(sims.array, model.file=NULL, program=NULL,
       }
     }
   }
-  sims <- sims[sample(n.sims), ]
+  sims <- sims[sample(n.sims), , drop = FALSE]
   sims.list <- summary.mean <- summary.sd <- summary.median <- vector(n.roots,
     mode = "list")
   names(sims.list) <- names(summary.mean) <- names(summary.sd) <- names(summary.median) <- root.short

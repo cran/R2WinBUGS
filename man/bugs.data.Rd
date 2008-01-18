@@ -2,11 +2,11 @@
 \alias{bugs.data}
 \title{Writing input for WinBUGS}
 
-\description{Write file \file{data.txt} for \pkg{WinBUGS} to read - for
+\description{Write file for \pkg{WinBUGS} to read - for
   internal use.}
 
 \usage{
-bugs.data(data, dir = getwd(), digits = 5)
+bugs.data(data, dir = getwd(), digits = 5, data.file = "data.txt")
 }
 \arguments{
   \item{data}{either a named list (names corresponding to variable names
@@ -16,10 +16,11 @@ bugs.data(data, dir = getwd(), digits = 5)
   \item{dir}{the directory to write the file \file{data.txt} to}
   \item{digits}{number of significant digits used for \pkg{WinBUGS}
     input, see \code{\link{formatC}}}
+  \item{data.file}{name for the file R writes the data into.}
 }
 
-\value{Nothing, but as a side effect, the data file \file{data.txt} is
-  written}
+\value{The name of \code{data.file} is returned and as a side effect, 
+    the data file is written}
 
 \seealso{The main function to be called by the user is \code{\link{bugs}}.}
 \keyword{internal}

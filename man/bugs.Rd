@@ -9,28 +9,31 @@
 \usage{
 bugs(data, inits, parameters.to.save, model.file="model.bug",
     n.chains=3, n.iter=2000, n.burnin=floor(n.iter/2),
-    n.thin=max(1, floor(n.chains * (n.iter - n.burnin)/1000)),
-    bin=(n.iter - n.burnin) / n.thin,
+    n.thin=max(1, floor(n.chains * (n.iter - n.burnin) / n.sims)),
+    n.sims = 1000, bin=(n.iter - n.burnin) / n.thin,
     debug=FALSE, DIC=TRUE, digits=5, codaPkg=FALSE,
     bugs.directory="c:/Program Files/WinBUGS14/",
     program=c("WinBUGS", "OpenBUGS", "winbugs", "openbugs"),
     working.directory=NULL, clearWD=FALSE,
     useWINE=.Platform$OS.type != "windows", WINE=NULL,
-    newWINE=TRUE, WINEPATH=NULL)
+    newWINE=TRUE, WINEPATH=NULL, bugs.seed=NULL, summary.only=FALSE,
+    save.history=!summary.only)
 }
 
 \arguments{
   \item{data}{either a named list (names corresponding to variable names
     in the \code{model.file}) of the data for the \pkg{WinBUGS} model,
     \emph{or} a vector or list of the names of the data objects used by
-    the model. If \code{data="data.txt"}, it is assumed that data have
-    already been written to the working directory in a file called
-    \file{data.txt}, e.g. by the function \code{\link{bugs.data}}.}
+    the model. If \code{data} is a one element character vector (such as \code{"data.txt"}), 
+    it is assumed that data have already been written to the working directory into that file, 
+    e.g. by the function \code{\link{bugs.data}}.}
   \item{inits}{a list with \code{n.chains} elements; each element of the
     list is itself a list of starting values for the \pkg{WinBUGS} model,
     \emph{or} a function creating (possibly random) initial values.
     Alternatively, if \code{inits=NULL}, initial values are generated
-    by \pkg{WinBUGS}.}
+    by \pkg{WinBUGS}. If \code{inits} is a character vector with \code{n.chains} elements, 
+    it is assumed that inits have already been written to the working directory into those files, 
+    e.g. by the function \code{\link{bugs.inits}}.}
   \item{parameters.to.save}{character vector of the names of the
     parameters to save which should be monitored}
   \item{model.file}{file containing the model written in \pkg{WinBUGS} code.
@@ -38,7 +41,9 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
     If the extension is \file{.bug} and \code{program=="WinBUGS"},
     a copy of the file with extension \file{.txt} will be created
     in the \code{bugs()} call and removed afterwards. Note that
-    similarly named \file{.txt} files will be overwritten.}
+    similarly named \file{.txt} files will be overwritten.
+    Alternatively, \code{model.file} can be an R function that contains a BUGS model that is written to a 
+    temporary model file (see \code{\link{tempfile}}) using \code{\link{write.model}}.}
   \item{n.chains}{number of Markov chains (default: 3)}
   \item{n.iter}{number of total iterations per chain (including burn in;
     default: 2000)}
@@ -50,6 +55,7 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
     \code{n.iter} is large.  Default is \code{max(1, floor(n.chains *
     (n.iter-n.burnin) / 1000))} which will only thin if there are at
     least 2000 simulations.}
+  \item{n.sims}{The approximate number of simulations to keep after thinning.}
   \item{bin}{number of iterations between saving of results
     (i.e. the coda files are saved after each \code{bin} iterations);
     default is to save only at the end.}
@@ -66,7 +72,9 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
     is returned, if \code{TRUE} file names of \pkg{WinBUGS} output are
     returned for easy access by the \pkg{coda} package through function
     \code{\link{read.bugs}} (not used if \code{program="OpenBUGS"}).}
-  \item{bugs.directory}{directory that contains the \pkg{WinBUGS} executable}
+  \item{bugs.directory}{directory that contains the \pkg{WinBUGS} executable.
+    If the global option \code{R2WinBUGS.bugs.directory} is not \code{NULL}, 
+    it will be used as the default.}
   \item{program}{the program to use, either
     \code{winbugs}/\code{WinBUGS} or \code{openbugs}/\code{OpenBUGS},
     the latter makes use of function \code{\link{openbugs}} and requires
@@ -90,6 +98,10 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
     utility}
   \item{WINEPATH}{character, path to \file{winepath} binary file, it is
     tried hard to get the information automatically if not given.}
+  \item{bugs.seed}{random seed for \pkg{WinBUGS} (default is no seed)}
+  \item{summary.only}{If \code{TRUE}, only a parameter summary for very quick analyses is given, 
+    temporary created files are not removed in that case.}
+  \item{save.history}{If \code{TRUE} (the default), trace plots are generated at the end.}
 }
 
 \details{
@@ -191,7 +203,7 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
 
 \author{Andrew Gelman, \email{gelman@stat.columbia.edu},
   \url{http:/www.stat.columbia.edu/~gelman/bugsR/}; modifications and
-  packaged by Sibylle Sturtz, \email{sturtz@statistik.uni-dortmund.de},
+  packaged by Sibylle Sturtz, \email{sturtz@statistik.tu-dortmund.de},
   and Uwe Ligges.}
 
 \seealso{\code{\link{print.bugs}}, \code{\link{plot.bugs}}, as well as

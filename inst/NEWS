@@ -1,12 +1,16 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-7 
+- this file is now available as NEWS file in top folder of installed package
+
 Update 2.1-6 (23 August 2007):
 - reverting back to use thin.updater since it is faster, however CODA files
-  have "wrong" indexes
+  have "wrong" indexes - this needs to be fixed in BUGS program
 - WINE arguments are now set in such a way that defaults work on Windows
   and Linux
 - minor formatting in the code and help files
+- added R2WinBUGS-package help page
 
 Update 2.1-5 (12 June 2007):
 - proper indexing of CODA files also in R version

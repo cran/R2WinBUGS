@@ -1,15 +1,15 @@
 "monitor" <-
-function (a, n.chains, trans=NULL, keep.all=FALSE, Rupper.keep=FALSE) {
+function (a, n.chains=dim(a)[2], trans=NULL, keep.all=FALSE, Rupper.keep=FALSE) {
 
-# If keep.all=T:  a is a n x m x k array:
-#   m sequences of length n, k variables measured
-# If keep.all=F:  a is a 2n x m x k array (first half will be discarded)
-#
-# trans is a vector of length k:  "" if no transformation, or "log" or "logit"
-# (If trans is not defined, it will be set to "log" for parameters that
-# are all-positive and 0 otherwise.)
-#
-# If Rupper.keep=T:  keep Rupper.  (Otherwise don't display it.)
+## If keep.all=T:  a is a n x m x k array:
+##   m sequences of length n, k variables measured
+## If keep.all=F:  a is a 2n x m x k array (first half will be discarded)
+##
+## trans is a vector of length k:  "" if no transformation, or "log" or "logit"
+## (If trans is not defined, it will be set to "log" for parameters that
+## are all-positive and 0 otherwise.)
+##
+## If Rupper.keep=TRUE:  keep Rupper.  (Otherwise don't display it.)
   invlogit <- function (x) {1 / (1 + exp(-x))}
   nparams <- if(length(dim(a)) < 3) 1 else dim(a)[length(dim(a))]
   # Calculation and initialization of the required matrix "output"
@@ -30,9 +30,9 @@ function (a, n.chains, trans=NULL, keep.all=FALSE, Rupper.keep=FALSE) {
             confshrink = conv.p$confshrink, n.eff = conv.p$n.eff)
     }
     else if (trans[i]=="logit"){
-    		if (!is.R()){
-    			logit <- function (x) { log(x /(1- x)) }
-    		}
+            if (!is.R()){
+                logit <- function (x) { log(x /(1- x)) }
+            }
         conv.p <- conv.par(logit(ai), n.chains, Rupper.keep=Rupper.keep)
         conv.p <- list(quantiles = invlogit(conv.p$quantiles),
             confshrink = conv.p$confshrink, n.eff = conv.p$n.eff)

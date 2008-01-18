@@ -1,14 +1,14 @@
-
-if (is.R()) {
-
 openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
   n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
-  n.thin = max(1, floor(n.chains *(n.iter - n.burnin)/1000)),
+  n.thin = max(1, floor(n.chains *(n.iter - n.burnin) / n.sims)), n.sims = 1000,
   DIC = TRUE, bugs.directory = "c:/Program Files/OpenBUGS/",
   working.directory=NULL, digits = 5)
 {
-  if(!require(BRugs))
+  if(!is.R())
+    stop("OpenBUGS is not yet available in S-PLUS")
+  if(!require("BRugs"))
     stop("BRugs is required")
+
   ## switching from bugs() to BRugsFit() notation
   modelFile <- model.file
   numChains <- n.chains
@@ -55,7 +55,7 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
   ## set the adaptive phases
   adaptivelines <- scan(system.file("OpenBUGS", "Bugs", "Rsrc",
                                     "Registry.txt", package="BRugs"),
-                        what="character")
+                        what="character", quiet = TRUE)
   factories <- sub(".adaptivePhase", "",
                    adaptivelines[grep("adaptivePhase",adaptivelines)])
   sapply(factories, BRugs::modelSetAP, max(0, nBurnin-1))
@@ -92,6 +92,4 @@ sort.name <- function(a, b){
   bracket.pos <- regexpr("\\[", a)
   a.stem <- substr(a, 1, ifelse(bracket.pos>0, bracket.pos-1, nchar(a)))
   a[order(match(a.stem, b))]
-}
-
 }

@@ -9,7 +9,9 @@
 \usage{
 bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
     model.file, debug=FALSE, is.inits, bin, DIC=FALSE,
-    useWINE=.Platform$OS.type != "windows", newWINE=TRUE, WINEPATH=NULL)
+    useWINE=.Platform$OS.type != "windows", newWINE=TRUE, WINEPATH=NULL, 
+    bugs.seed=NULL, summary.only=FALSE, save.history=TRUE, 
+    bugs.data.file, bugs.inits.files)
 }
 \arguments{
   \item{parameters.to.save}{parameters that should be monitored}
@@ -28,6 +30,12 @@ bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   \item{useWINE}{as in \code{\link{bugs}} meta function}
   \item{newWINE}{as in \code{\link{bugs}} meta function}
   \item{WINEPATH}{as in \code{\link{bugs}} meta function}
+  \item{bugs.seed}{random seed for \pkg{WinBUGS} (default is no seed)}
+  \item{summary.only}{If \code{TRUE}, only a parameter summary for very quick analyses is given, 
+    temporary created files are not removed in that case.}
+  \item{save.history}{If \code{TRUE} (the default), trace plots are generated at the end.}
+  \item{bugs.data.file}{character name of the data file}
+  \item{bugs.inits.files}{character vector of names of the inits files}  
 }
 
 \value{Nothing, but as a side effect, the script file \file{script.txt}

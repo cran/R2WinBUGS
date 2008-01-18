@@ -3,15 +3,13 @@
 \alias{conv.par}
 \title{Special summary statistics}
 
-\description{Special summary statistics of the WinBUGS output - intended
-  for internal use}
+\description{Special summary statistics of the WinBUGS output.}
 
 \usage{
-monitor(a, n.chains, trans = NULL, keep.all = FALSE, Rupper.keep = FALSE)
+monitor(a, n.chains = dim(a)[2], trans = NULL, keep.all = FALSE, Rupper.keep = FALSE)
 conv.par(x, n.chains, Rupper.keep = TRUE)
 }
 \arguments{
-  \item{x}{}
   \item{a}{a \code{n * m * k} array: \code{m} sequences of length
     \code{n}, \code{k} variables measured}
   \item{n.chains}{number of Markov chains}
@@ -21,9 +19,10 @@ conv.par(x, n.chains, Rupper.keep = TRUE)
   \item{keep.all}{if \code{FALSE} (default), first half of \code{a} will
     be discarded}
   \item{Rupper.keep}{if \code{FALSE}, don't return \code{Rupper}}
+  \item{x}{for internal use only}
 }
 
-\details{See the well documented code for details.}
+\details{\code{conv.par} is intended for internal use only.}
 
 \value{
   for \code{monitor}:

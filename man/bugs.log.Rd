@@ -17,11 +17,7 @@ bugs.log(file)
   \item{DIC}{A matrix containing the DIC statistics as returned from
     \pkg{WinBUGS}.}
 }
-
-\details{ In later releases of \pkg{R2WinBUGS}, this function is
-considered to read the relevant data from the log file rather than
-analysing and calculating the relevant data in \R / S-PLUS again.  }
-
 \seealso{The main function that generates the log file is \code{\link{bugs}}.}
+\author{Jouni Kerman}
 \keyword{IO}
 \keyword{file}

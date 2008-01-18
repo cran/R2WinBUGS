@@ -1,49 +1,34 @@
-bugs.log <- function(file)
+bugs.log <- function (file)
 {
-    if(!file.exists(file))
-        stop("Log file", file, "does not exist")
-    logfile <- readLines(file)
+  # Extracts the summary statistics from log.txt written by WinBUGS.
+  # Jouni Kerman 2007-01-30
+  # does essentially the same thing as bugs.log() but
+  # - won't crash if DIC is not there
+  # - makes fewer assumptions about the structure of the matrix
 
-    ## --- Stats ---
-
-    statsStart <- which(logfile == "Node statistics") + 2
-    if(!length(statsStart))
-        stop("Log file", file, "does not contain node statistics.")
-    ## + 2 to remove
-    ## "Node statistics"
-    ## "\t node\t mean\t sd\t MC error\t2.5%\tmedian\t97.5%\tstart\tsample"
-
-    statsEnd <- which(logfile == "dic.stats()") - 1
-    ## - 1 to remove
-    ## "dic.stats()"
-
-    statsTable <- logfile[statsStart:statsEnd]
-    statsTable <- sub("\t", "", statsTable)
-    statsTable <- sapply(strsplit(statsTable, "\t"), "[")
-    colnames(statsTable) <- statsTable[1,]
-    statsTable <- t(apply(statsTable[-1,], 2, as.numeric))
-    colnames(statsTable) <- c("mean", "sd", "MC error", "2.5%", "median", "97.5%", "start", "sample")
-
-    ## --- DIC ---
-
-    DICStart <- which(logfile == "DIC") + 3
-    ## + 3 to remove
-    ## "DIC"
-    ## "Dbar = post.mean of -2logL; Dhat = -2LogL at post.mean of stochastic nodes"
-    ## "\tDbar\tDhat\tpD\tDIC\t"
-
-    DICEnd <- grep("history(", logfile, fixed=TRUE) - 1
-    ## - 1 to remove
-    ## "history(..."
-
-    if(!length(DICEnd) || !length(DICStart) || (DICEnd < DICStart)){
-        DICTable <- NA
-    } else {
-        DICTable <- logfile[DICStart:DICEnd]
-        DICTable <- sapply(strsplit(DICTable, "\t"), "[")
-        colnames(DICTable) <- DICTable[1,]
-        DICTable <- t(apply(DICTable[-1,], 2, as.numeric))
-        colnames(DICTable) <- c("Dbar", "Dhat", "pD", "DIC")
-    }
-    list(stats=statsTable, DIC=DICTable)
+  if(!file.exists(file))
+    stop("Log file", file, "does not exist")
+  log.txt <- readLines(file)
+  extract <- function (m, line.match, skip=0, empty.left.col=TRUE) {
+    start <- (skip + which(m == line.match)[1])
+    if(is.na(start)) return(NULL)
+    if(length(start) < 1) return(NULL)
+    mx <- strsplit(m[-(1:start)], "\t")
+    n.cols <- length(mx[[1]])
+    mxlen <- sapply(mx, length)
+    end <- which(mxlen!=n.cols)[1] - 1
+    mx <- mx[1:end]
+    cm <- matrix(unlist(mx), ncol=n.cols, byrow=TRUE) # character format
+    if(empty.left.col) cm <- cm[,-1]    # empty column
+    col.names <- cm[1, -1]              # first column is just "node"
+    row.names <- cm[,1][-1]             # first row is just ""
+    col.names <- gsub("[[:space:]]+", "", col.names) # get rid of spaces
+    cm <- cm[-1,-1] # delete dimname row/columns
+    m <- matrix(as.numeric(cm), nrow=nrow(cm)) # convert to numeric
+    dimnames(m) <- list(row.names, col.names)
+    return(m)
+  }
+  stats <- extract(log.txt, "Node statistics")
+  DIC <- extract(log.txt, "DIC", skip=1, empty.left.col=FALSE)
+  list(stats=stats, DIC=DIC)
 }

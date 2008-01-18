@@ -10,8 +10,9 @@
 openbugs(data, inits, parameters.to.save,
     model.file = "model.txt", n.chains = 3, n.iter = 2000,
     n.burnin = floor(n.iter/2),
-    n.thin = max(1, floor(n.chains * (n.iter - n.burnin) / 1000)),
-    DIC = TRUE, bugs.directory = "c:/Program Files/OpenBUGS/",
+    n.thin = max(1, floor(n.chains * (n.iter - n.burnin) / n.sims)),
+    n.sims = 1000,  DIC = TRUE, 
+    bugs.directory = "c:/Program Files/OpenBUGS/",
     working.directory = NULL, digits = 5)
 }
 
@@ -19,9 +20,9 @@ openbugs(data, inits, parameters.to.save,
   \item{data}{either a named list (names corresponding to variable names
     in the \code{model.file}) of the data for the \pkg{OpenBUGS} model,
     \emph{or} a vector or list of the names of the data objects used by
-    the model.  If \code{data = "data.txt"}, it is assumed that data
-    have already been written to the working directory in a file called
-    \file{data.txt}, e.g. by the function \code{\link{bugs.data}}.}
+    the model.  If \code{data} is a one element character vector (such as \code{"data.txt"}), 
+    it is assumed that data have already been written to the working directory into that file, 
+    e.g. by the function \code{\link{bugs.data}}.}
   \item{inits}{a list with \code{n.chains} elements; each element of the
     list is itself a list of starting values for the \pkg{OpenBUGS} model,
     \emph{or} a function creating (possibly random) initial values.
@@ -45,7 +46,8 @@ openbugs(data, inits, parameters.to.save,
     \code{n.iter} is large.  Default is \code{max(1, floor(n.chains *
     (n.iter-n.burnin) / 1000))} which will only thin if there are at
     least 2000 simulations.}
- \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD, and
+  \item{n.sims}{The approximate number of simulations to keep after thinning.}
+  \item{DIC}{logical; if \code{TRUE} (default), compute deviance, pD, and
     DIC.  This is done in \pkg{BRugs} directly.}
   \item{digits}{number of significant digits used for \pkg{OpenBUGS} input,
     see \code{\link{formatC}}}
@@ -61,8 +63,13 @@ openbugs(data, inits, parameters.to.save,
 
 \author{Andrew Gelman, \email{gelman@stat.columbia.edu},
   \url{http:/www.stat.columbia.edu/~gelman/bugsR/}; modifications and
-  packaged by Sibylle Sturtz, \email{sturtz@statistik.uni-dortmund.de},
+  packaged by Sibylle Sturtz, \email{sturtz@statistik.tu-dortmund.de},
   and Uwe Ligges.
+}
+
+\note{By default, BRugs (and hence \code{openbugs()}) is quite verbose. 
+    This can be controlled for the whole BRugs package by by the option \sQuote{BRugsVerbose} (see \code{\link{options}})
+    which is set to \code{TRUE} by default.
 }
 
 \seealso{\code{\link{bugs}} and the \pkg{BRugs} package}

@@ -6,7 +6,8 @@
   the working directory for \pkg{WinBUGS} to read - for internal use.}
 
 \usage{
-bugs.inits(inits, n.chains, digits)
+bugs.inits(inits, n.chains, digits,
+    inits.files = paste("inits", 1:n.chains, ".txt", sep = ""))
 }
 \arguments{
   \item{inits}{a list with \code{n.chains} elements; each element of the
@@ -15,9 +16,10 @@ bugs.inits(inits, n.chains, digits)
   \item{n.chains}{number of Markov chains}
   \item{digits}{number of significant digits used for \pkg{WinBUGS}
     input, see \code{\link{formatC}}}
+  \item{inits.file}{name for the inits files R write the inits into.}
 }
 
-\value{Nothing, but as a side effect, the inits files \file{inits*.txt}
+\value{Vector of names of \code{inits.files}; as a side effect, the inits files \file{inits*.txt}
     are written}
 
 \seealso{The main function to be called by the user is \code{\link{bugs}}.}

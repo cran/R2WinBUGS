@@ -9,7 +9,7 @@
 
   ## Is bugs.directory defined in Windows (where second character is :
   ## i.e. C:\Program...) or Unix style path?
-  if(useWINE && (substr(bugs.directory, start=2, stop=2) == ":")) {
+  if(useWINE && (substr(bugs.directory, 2, 2) == ":")) {
     bugs.directory <- win2native(bugs.directory, newWINE=newWINE, WINEPATH=WINEPATH)
   }
 
@@ -49,6 +49,6 @@
   } else {
     tmp <- scan("coda1.txt", character(), sep="\n")
   }
-  if(length(grep("Bugs did not run correctly", tmp)) > 0)
+  if(length(grep("BUGS did not run correctly", tmp)) > 0)
     stop("Look at the log file and\ntry again with 'debug=TRUE' to figure out what went wrong within Bugs.")
 }
