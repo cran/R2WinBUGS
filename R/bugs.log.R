@@ -11,10 +11,11 @@ bugs.log <- function (file)
   log.txt <- readLines(file)
   extract <- function (m, line.match, skip=0, empty.left.col=TRUE) {
     start <- (skip + which(m == line.match)[1])
-    if(is.na(start)) return(NULL)
-    if(length(start) < 1) return(NULL)
+    if(is.na(start)) return(NA)
+    if(length(start) < 1) return(NA)
     mx <- strsplit(m[-(1:start)], "\t")
     n.cols <- length(mx[[1]])
+    if(n.cols < 1) return(NA)
     mxlen <- sapply(mx, length)
     end <- which(mxlen!=n.cols)[1] - 1
     mx <- mx[1:end]
