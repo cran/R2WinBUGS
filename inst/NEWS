@@ -1,7 +1,18 @@
 Changes to R2WinBUGS:
 =====================
 
-Update 2.1-7 
+Update 2.1-8?
+- findUnixBinary now fails (with a meaningfull error message) always if the
+  binary file does not exist.
+- If working.directory=NULL (the default setting), then a temporary
+  directory is used as a working directory to prevent overwriting/removing
+  the existing files.
+- File script.txt is also removed when clearWD=TRUE.
+- If model.file does not have a "txt" extension, then it is temporarily
+  copied to a file with "txt" extension in the working directory and
+  removed at the end of WinBUGS run.
+
+Update 2.1-7
 - this file is now available as NEWS file in top folder of installed package
 
 Update 2.1-6 (23 August 2007):

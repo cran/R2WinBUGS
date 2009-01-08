@@ -17,11 +17,15 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
   nThin <- n.thin
   if(DIC) parameters.to.save <- c(parameters.to.save, "deviance")
   parametersToSave <- parameters.to.save
-  if(!is.null(working.directory)) {
-    savedWD <- getwd()
-    setwd(working.directory)
-    on.exit(setwd(savedWD))
+
+  ## Move to working drirectory or temporary directory when NULL
+  if(is.null(working.directory)) {
+    working.directory <- tempdir()
   }
+  savedWD <- getwd()
+  setwd(working.directory)
+  on.exit(setwd(savedWD))
+
   if(!file.exists(modelFile)) {
     stop(modelFile, " does not exist")
   }

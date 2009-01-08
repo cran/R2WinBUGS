@@ -2,7 +2,7 @@ findUnixBinary <- function(x)
 {
   ## --- Environmental variable ---
   tmp <- Sys.getenv(toupper(x))
-  if(nchar(tmp) != 0) return(tmp)
+  if(nchar(tmp) != 0 && file.exists(tmp)) return(tmp)
   ## else
 
   ## --- Standard place ---
@@ -12,13 +12,13 @@ findUnixBinary <- function(x)
 
   ## --- Which ---
   tmp <- system(paste("which ", x, sep=""), intern=TRUE)
-  if(length(tmp) != 0) return(tmp)
+  if(length(tmp) != 0 && file.exists(tmp)) return(tmp)
   ## else ..
 
   ## --- Locate ---
   tmp <- system(paste("locate ", x, " | grep bin/", x, "$", sep=""), intern=TRUE)
   tmp <- tmp[length(tmp)] ## keep only last hit
-  if(length(tmp) > 0) return(tmp)
+  if(length(tmp) > 0 && file.exists(tmp)) return(tmp)
 
   stop(paste("couldn't find", x, "binary file"))
 }

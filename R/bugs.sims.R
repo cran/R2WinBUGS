@@ -48,8 +48,6 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC=TRUE)
       for (k in 1:dimension.short[j]) n.indexes.short[[j]][k] <- length (
         unique (unlist (lapply (indexes.long[long.short[[j]]], .subset, k))))
       length.short[j] <- prod(n.indexes.short[[j]])
-      if (length(long.short[[j]])!=length.short[j])
-        stop(paste("error in parameter", root.short[[j]], "in parameters.to.save"))
       indexes.short[[j]] <- as.list(numeric(length.short[j]))
       for (k in 1:length.short[j])
         indexes.short[[j]][[k]] <- indexes.long[[long.short[[j]][k]]]

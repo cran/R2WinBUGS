@@ -11,6 +11,11 @@ function(data, inits, parameters.to.save, model.file="model.bug",
     newWINE=TRUE, WINEPATH=NULL, bugs.seed=NULL, summary.only=FALSE,
     save.history=!summary.only)
 {
+  if(!is.null(working.directory)) {
+    savedWD <- getwd()
+    setwd(working.directory)
+    on.exit(setwd(savedWD))
+  }
   program <- match.arg(program)
   if (missing(bugs.directory) && 
         !is.null(bugs.dir <- getOption("R2WinBUGS.bugs.directory"))) { # requested by Jouni Kerman
@@ -23,7 +28,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
                     n.chains, n.iter, n.burnin, n.thin, n.sims, DIC=DIC,
                     bugs.directory, working.directory, digits))
   }
-  ## Checking number of inits, which is NOT save here:
+  ## Checking number of inits, which is NOT saved here:
   if(!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains))
     stop("Number of initialized chains (length(inits)) != n.chains")
 
@@ -36,11 +41,21 @@ function(data, inits, parameters.to.save, model.file="model.bug",
     if(is.null(WINEPATH)) WINEPATH <- findUnixBinary(x="winepath")
   }
 
-  if(!is.null(working.directory)) {
-    savedWD <- getwd()
-    setwd(working.directory)
-    on.exit(setwd(savedWD))
+  ## Move to working drirectory or temporary directory when NULL
+  if(is.null(working.directory)) {
+    working.directory <- tempdir()
+    if(useWINE){
+        ## Some tweaks for wine (particularly required for Mac OS)
+        working.directory <- gsub("//", "/", working.directory)
+        Sys.chmod(working.directory, mode="750")
+        on.exit(Sys.chmod(working.directory, mode="700"))
+    }
   }
+  savedWD <- getwd()
+  setwd(working.directory)
+  on.exit(setwd(savedWD), add = TRUE)
+
+  ## model.file is not a file name but a model function
   if(is.function(model.file)){
       temp <- tempfile("model")
       temp <-
@@ -82,15 +97,19 @@ function(data, inits, parameters.to.save, model.file="model.bug",
     bugs.inits.files <- bugs.inits(inits, n.chains, digits)
   }
 
-
   if(DIC) parameters.to.save <- c(parameters.to.save, "deviance")
   ## Model files with extension ".bug" need to be renamed to ".txt"
-  if(length(grep("[.]bug$", model.file))) {
-    new.model.file <- sub("[.]bug$", ".txt", model.file)
+  if(!length(grep("\\.txt$", tolower(model.file)))) {
+    new.model.file <- paste(basename(model.file), ".txt", sep="")
+    if(!is.null(working.directory)) new.model.file <- file.path(working.directory, new.model.file)
     file.copy(model.file, new.model.file, overwrite=TRUE)
     on.exit(try(file.remove(new.model.file)), add=TRUE)
   } else {
     new.model.file <- model.file
+  }
+  if(useWINE){
+        ## Some tweaks for wine (particularly required for Mac OS)
+        new.model.file <- gsub("//", "/", new.model.file)
   }
   bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
               new.model.file, debug=debug, is.inits=!is.null(inits),
@@ -112,7 +131,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
             model.file=model.file, program=program)
   if(clearWD) {
     file.remove(c(bugs.data.file, "log.odc", "log.txt", "codaIndex.txt",
-                  bugs.inits.files,
+                  bugs.inits.files, "script.txt",
                   paste("coda", 1:n.chains, ".txt", sep="")))
   }
   class(sims) <- "bugs"

@@ -82,7 +82,8 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
     choice is not available in S-PLUS.}
   \item{working.directory}{sets working directory during execution of
     this function; \pkg{WinBUGS}' in- and output will be stored in this
-    directory; if \code{NULL}, the current working directory is chosen.}
+    directory; if \code{NULL}, a temporary working directory via
+    \code{\link{tempdir}} is used.}
   \item{clearWD}{logical; indicating whether the files \file{data.txt},
     \file{inits[1:n.chains].txt}, \file{log.odc}, \file{codaIndex.txt},
     and \file{coda[1:nchains].txt} should be removed after \pkg{WinBUGS} has
@@ -93,11 +94,13 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
     \pkg{WinBUGS}, defaults to \code{FALSE} on Windows, and \code{TRUE}
     otherwise. Not available in S-PLUS.}
   \item{WINE}{character, path to \file{wine} binary file, it is
-    tried hard to get the information automatically if not given.}
+    tried hard (by a guess and the utilities \code{which} and \code{locate}) 
+    to get the information automatically if not given.}
   \item{newWINE}{Use new versions of Wine that have \file{winepath}
     utility}
   \item{WINEPATH}{character, path to \file{winepath} binary file, it is
-    tried hard to get the information automatically if not given.}
+    tried hard (by a guess and the utilities \code{which} and \code{locate}) 
+    to get the information automatically if not given.}
   \item{bugs.seed}{random seed for \pkg{WinBUGS} (default is no seed)}
   \item{summary.only}{If \code{TRUE}, only a parameter summary for very quick analyses is given, 
     temporary created files are not removed in that case.}
@@ -243,8 +246,7 @@ parameters <- c("theta", "mu.theta", "sigma.theta")
 ## also you need write access in the working directory:
 schools.sim <- bugs(data, inits, parameters, model.file,
     n.chains=3, n.iter=5000,
-    bugs.directory="c:/Program Files/WinBUGS14/",
-    working.directory=NULL, clearWD=TRUE)
+    bugs.directory="c:/Program Files/WinBUGS14/")
 print(schools.sim)
 plot(schools.sim)
 }
