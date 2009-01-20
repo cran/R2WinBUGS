@@ -1,7 +1,11 @@
 Changes to R2WinBUGS:
 =====================
 
-Update 2.1-8?
+Update 2.1-10
+- bugfix: working.directory was not always reset when function terminated.
+
+Update 2.1-9
+- R2WinBUGS now works on OS X and Solaris (with suitable versions of wine)
 - findUnixBinary now fails (with a meaningfull error message) always if the
   binary file does not exist.
 - If working.directory=NULL (the default setting), then a temporary
