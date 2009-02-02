@@ -42,6 +42,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
   }
 
   ## Move to working drirectory or temporary directory when NULL
+  inTempDir <- FALSE
   if(is.null(working.directory)) {
     working.directory <- tempdir()
     if(useWINE){
@@ -53,6 +54,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
     savedWD <- getwd()
     setwd(working.directory)
     on.exit(setwd(savedWD), add = TRUE)
+    inTempDir <- TRUE
   }
 
   ## model.file is not a file name but a model function
@@ -68,6 +70,8 @@ function(data, inits, parameters.to.save, model.file="model.bug",
       model.file <- gsub("\\\\", "/", temp)
       if(!is.R()) on.exit(file.remove(model.file), add=TRUE)
   }
+  if(inTempDir && basename(model.file) == model.file)
+    try(file.copy(file.path(savedWD, model.file), model.file, overwrite = TRUE))
   if(!file.exists(model.file))
     stop(paste(model.file, "does not exist."))
   if(file.info(model.file)$isdir)
@@ -76,13 +80,16 @@ function(data, inits, parameters.to.save, model.file="model.bug",
        (regexpr("\\.txt$", data) > 0))) {
     bugs.data.file <- bugs.data(data, dir = getwd(), digits)
   } else {
+    if(inTempDir && basename(data) == data)
+        try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
     if(!file.exists(data))
         stop("File", data, "does not exist.")
     bugs.data.file <- data
   }
 
-
   if (is.character(inits)) {
+    if(inTempDir && all(basename(inits) == inits))
+        try(file.copy(file.path(savedWD, inits), inits, overwrite = TRUE))
     if (!all(file.exists(inits))) {
         stop("One or more inits files are missing")
     }

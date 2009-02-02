@@ -1,6 +1,11 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-11
+- bugfix: if working.directory was unset and files are assumed to be in R's 
+  former wd, these are copied to the tempdir that is set as new working 
+  directory now.
+
 Update 2.1-10
 - bugfix: working.directory was not always reset when function terminated.
 
