@@ -48,7 +48,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
     if(useWINE){
         ## Some tweaks for wine (particularly required for Mac OS)
         working.directory <- gsub("//", "/", working.directory)
-        Sys.chmod(working.directory, mode="750")
+        Sys.chmod(working.directory, mode="770")
         on.exit(Sys.chmod(working.directory, mode="700"), add = TRUE)
     }
     savedWD <- getwd()

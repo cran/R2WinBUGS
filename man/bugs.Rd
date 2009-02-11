@@ -142,12 +142,12 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
 
   If \code{useWINE=TRUE} is used, all paths (such as
   \code{working.directory} and \code{model.file}, must be given in
-  native (Unix) style, but \code{working.directory} can be given in
+  native (Unix) style, but \code{bugs.directory} can be given in
   Windows path style (e.g. \dQuote{c:/Program Files/WinBUGS14/}) or
   native (Unix) style
   (e.g. \dQuote{/path/to/wine/folder/dosdevices/c:/Program
   Files/WinBUGS14}).  This is done to achieve greatest portability with
-  default argument value for \code{working.directory}.
+  default argument value for \code{bugs.directory}.
 
 }
 

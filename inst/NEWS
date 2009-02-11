@@ -1,6 +1,12 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-13
+- hack: adding group write permission for a temporary working directory in order to
+  avoid problems with WINE emulator on Mac OS X
+- bugfix: properly using chain parameters in as.mcmc.list.bugs
+- documentation fix
+
 Update 2.1-12
 - new method as.mcmc.list.bugs contributed by Mike Meredith
 - bugfix: plot.bugs() did not reset par(mfrow)
