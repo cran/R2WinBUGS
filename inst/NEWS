@@ -1,6 +1,15 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-12
+- new method as.mcmc.list.bugs contributed by Mike Meredith
+- bugfix: plot.bugs() did not reset par(mfrow)
+- bugfix: adaptive phase stuff cannot read from files anymore by openbugs(),
+          feature has been removed
+- openbugs now displays messages before starting the sampling 
+  (essentially using flush.console())
+
+
 Update 2.1-11
 - bugfix: if working.directory was unset and files are assumed to be in R's 
   former wd, these are copied to the tempdir that is set as new working 

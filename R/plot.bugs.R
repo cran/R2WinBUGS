@@ -1,11 +1,12 @@
 plot.bugs <- function (x, display.parallel = FALSE, ...){
     mar.old <- par("mar")
     pty.old <- par(pty = "m")
+    mfrow.old <- par("mfrow")
     if (is.R())
-    	layout(matrix(c(1,2),1,2))
+        layout(matrix(c(1,2),1,2))
     else
-    	par(mfrow = c(1,2))
-    	
+        par(mfrow = c(1,2))
+        
     bugs.plot.summary (x, ...)
     bugs.plot.inferences (x, display.parallel, ...)
     header <- ""
@@ -16,8 +17,8 @@ plot.bugs <- function (x, display.parallel = FALSE, ...){
     header <- paste(header, x$n.chains, " chains, each with ",
         x$n.iter, " iterations (first ", x$n.burnin, " discarded)", sep = "")
     mtext(header, outer = TRUE, line = -1, cex = 0.7)
-    if (is.R())  par(pty = pty.old[[1]], mar = mar.old)
-    else  invisible(par(pty = pty.old[[1]], mar = mar.old))
+    if (is.R())  par(pty = pty.old[[1]], mar = mar.old, mfrow = mfrow.old)
+    else  invisible(par(pty = pty.old[[1]], mar = mar.old, mfrow = mfrow.old))
 }
 
 if (!is.R()) {

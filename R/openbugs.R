@@ -21,11 +21,14 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
   ## Move to working drirectory or temporary directory when NULL
   if(is.null(working.directory)) {
     working.directory <- tempdir()
+    inTempDir <- TRUE
   }
   savedWD <- getwd()
   setwd(working.directory)
   on.exit(setwd(savedWD))
 
+  if(inTempDir && basename(model.file) == model.file)
+    try(file.copy(file.path(savedWD, model.file), model.file, overwrite = TRUE))
   if(!file.exists(modelFile)) {
     stop(modelFile, " does not exist")
   }
@@ -42,6 +45,8 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
   if(!(is.vector(data) && is.character(data) && all(file.exists(data)))) {
     data <- BRugs::bugsData(data, digits = digits)
   }
+  if(inTempDir && all(basename(data) == data))
+    try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
   BRugs::modelData(data)
   BRugs::modelCompile(numChains)
   if(missing(inits) || is.null(inits)) {
@@ -52,18 +57,27 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
       inits <- BRugs::bugsInits(inits = inits, numChains = numChains,
                                 digits = digits)
     }
+    if(inTempDir && all(basename(inits) == inits))
+        try(file.copy(file.path(savedWD, inits), inits, overwrite = TRUE))
     BRugs::modelInits(inits)
     BRugs::modelGenInits()
   }
   BRugs::samplesSetThin(nThin)
   ## set the adaptive phases
-  adaptivelines <- scan(system.file("OpenBUGS", "Bugs", "Rsrc",
-                                    "Registry.txt", package="BRugs"),
-                        what="character", quiet = TRUE)
-  factories <- sub(".adaptivePhase", "",
-                   adaptivelines[grep("adaptivePhase",adaptivelines)])
-  sapply(factories, BRugs::modelSetAP, max(0, nBurnin-1))
 
+## We do no longer have any Registry.txt file availabe, 
+## hence not resetting the adaptive phase any more.
+## People should move to BRugs directly.
+#  adaptivelines <- scan(system.file("OpenBUGS", "Bugs", "Rsrc",
+#                                    "Registry.txt", package="BRugs"),
+#                        what="character", quiet = TRUE)
+#  factories <- sub(".adaptivePhase", "",
+#                   adaptivelines[grep("adaptivePhase",adaptivelines)])
+#  sapply(factories, BRugs::modelSetAP, max(0, nBurnin-1))
+  if(getOption("BRugsVerbose")){   
+    cat("Sampling has been started ...\n")
+    flush.console()
+  }
   BRugs::modelUpdate(nBurnin)
   ## BRugs::samplesSetThin(nThin)
   if(DIC) {

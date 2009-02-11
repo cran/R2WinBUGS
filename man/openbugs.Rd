@@ -55,7 +55,8 @@ openbugs(data, inits, parameters.to.save,
     - currently unused}
   \item{working.directory}{sets working directory during execution of
     this function; \pkg{WinBUGS} in- and output will be stored in this
-    directory; if \code{NULL}, the current working directory is chosen.}
+    directory; if \code{NULL}, a temporary working directory via
+    \code{\link{tempdir}} is used.}
 
 }
 
@@ -68,7 +69,7 @@ openbugs(data, inits, parameters.to.save,
 }
 
 \note{By default, BRugs (and hence \code{openbugs()}) is quite verbose. 
-    This can be controlled for the whole BRugs package by by the option \sQuote{BRugsVerbose} (see \code{\link{options}})
+    This can be controlled for the whole BRugs package by the option \sQuote{BRugsVerbose} (see \code{\link{options}})
     which is set to \code{TRUE} by default.
 }
 

@@ -123,7 +123,7 @@ function (parameters.to.save, n.chains, n.iter, n.burnin, n.thin, DIC=TRUE)
   if(DIC) {
      ## Read DIC from BUGS log
      LOG <- bugs.log("log.txt")$DIC
-     if(any(is.na(LOG))) { ## Something went wrong --> Use Gelmans tweak
+     if(any(is.na(LOG))) { ## Something went wrong --> Use Gelman's tweak
         deviance <- all$sims.array[, , dim(sims.array)[3], drop = FALSE]
         if(!is.R()) dimnames(deviance) <- NULL
         dim(deviance) <- dim(deviance)[1:2]

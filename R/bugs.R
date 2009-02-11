@@ -80,7 +80,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
        (regexpr("\\.txt$", data) > 0))) {
     bugs.data.file <- bugs.data(data, dir = getwd(), digits)
   } else {
-    if(inTempDir && basename(data) == data)
+    if(inTempDir && all(basename(data) == data))
         try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
     if(!file.exists(data))
         stop("File", data, "does not exist.")

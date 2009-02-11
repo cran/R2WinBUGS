@@ -71,7 +71,10 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
   \item{codaPkg}{logical; if \code{FALSE} (default) a \code{bugs} object
     is returned, if \code{TRUE} file names of \pkg{WinBUGS} output are
     returned for easy access by the \pkg{coda} package through function
-    \code{\link{read.bugs}} (not used if \code{program="OpenBUGS"}).}
+    \code{\link{read.bugs}} (not used if \code{program="OpenBUGS"}).
+    A \code{bugs} object can be converted to an \code{mcmc.list} object as 
+    used by the \pkg{coda} package with the method \code{\link[coda]{as.mcmc.list}} 
+    (for which a method is provided by R2WinBUGS).}
   \item{bugs.directory}{directory that contains the \pkg{WinBUGS} executable.
     If the global option \code{R2WinBUGS.bugs.directory} is not \code{NULL}, 
     it will be used as the default.}
