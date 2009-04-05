@@ -1,7 +1,7 @@
 Package: R2WinBUGS
 Title: Running WinBUGS and OpenBUGS from R / S-PLUS
-Date: 2009-02-11
-Version: 2.1-13
+Date: 2009-04-05
+Version: 2.1-14
 Author: originally written by Andrew Gelman <gelman@stat.columbia.edu>;
         changes and packaged by Sibylle Sturtz
         <sturtz@statistik.tu-dortmund.de> and Uwe Ligges
@@ -21,6 +21,6 @@ URL: http://www.stat.columbia.edu/~gelman/bugsR/
 Maintainer: Uwe Ligges <ligges@statistik.tu-dortmund.de>
 License: GPL-2
 Dialect: R, S-PLUS
-Packaged: Sat Mar 28 18:50:50 2009; ligges
+Packaged: Sun Apr 5 18:06:55 2009; ligges
 Repository: CRAN
-Date/Publication: 2009-03-29 14:54:30
+Date/Publication: 2009-04-14 17:26:49

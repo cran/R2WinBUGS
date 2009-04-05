@@ -1,6 +1,9 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-14
+- new argument over.relax=FALSE
+
 Update 2.1-13
 - hack: adding group write permission for a temporary working directory in order to
   avoid problems with WINE emulator on Mac OS X

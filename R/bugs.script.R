@@ -3,7 +3,8 @@
            n.thin, model.file, debug=FALSE, is.inits, bin,
            DIC=FALSE, useWINE=.Platform$OS.type != "windows",
            newWINE=TRUE, WINEPATH=NULL, bugs.seed=NULL, summary.only=FALSE,
-           save.history=TRUE, bugs.data.file, bugs.inits.files)
+           save.history=TRUE, bugs.data.file, bugs.inits.files,
+           over.relax = FALSE)
 {
   ## Write file script.txt for Bugs
   if((ceiling(n.iter/n.thin) - ceiling(n.burnin/n.thin)) < 2)
@@ -58,6 +59,7 @@
     "compile (", n.chains, ")\n",
     if(is.inits) initlist,
     "gen.inits()\n",
+    if(over.relax) 'over.relax("yes")\n',
     thinUpdate,
     savelist,
     if(DIC) "dic.set()\n",

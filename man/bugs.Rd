@@ -17,7 +17,7 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
     working.directory=NULL, clearWD=FALSE,
     useWINE=.Platform$OS.type != "windows", WINE=NULL,
     newWINE=TRUE, WINEPATH=NULL, bugs.seed=NULL, summary.only=FALSE,
-    save.history=!summary.only)
+    save.history=!summary.only, over.relax = FALSE)
 }
 
 \arguments{
@@ -108,6 +108,7 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
   \item{summary.only}{If \code{TRUE}, only a parameter summary for very quick analyses is given, 
     temporary created files are not removed in that case.}
   \item{save.history}{If \code{TRUE} (the default), trace plots are generated at the end.}
+  \item{over.relax}{If \code{TRUE}, over-relaxed form of MCMC is used if available from WinBUGS.}
 }
 
 \details{

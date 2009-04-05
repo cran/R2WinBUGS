@@ -9,7 +9,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
     working.directory=NULL,
     clearWD=FALSE, useWINE=.Platform$OS.type != "windows", WINE=NULL,
     newWINE=TRUE, WINEPATH=NULL, bugs.seed=NULL, summary.only=FALSE,
-    save.history=!summary.only)
+    save.history=!summary.only, over.relax = FALSE)
 {
   if(!is.null(working.directory)) {
     savedWD <- getwd()
@@ -26,7 +26,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
     ## If OpenBUGS, we only call openbugs() and exit...
     return(openbugs(data, inits, parameters.to.save, model.file,
                     n.chains, n.iter, n.burnin, n.thin, n.sims, DIC=DIC,
-                    bugs.directory, working.directory, digits))
+                    bugs.directory, working.directory, digits, over.relax = over.relax))
   }
   ## Checking number of inits, which is NOT saved here:
   if(!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains))
@@ -124,7 +124,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
               WINEPATH=WINEPATH, bugs.seed=bugs.seed, 
               summary.only=summary.only, save.history=save.history, 
               bugs.data.file = bugs.data.file, 
-              bugs.inits.files = bugs.inits.files)
+              bugs.inits.files = bugs.inits.files, over.relax = over.relax)
   bugs.run(n.burnin, bugs.directory, WINE=WINE, useWINE=useWINE,
            newWINE=newWINE, WINEPATH=WINEPATH)
   if(codaPkg)

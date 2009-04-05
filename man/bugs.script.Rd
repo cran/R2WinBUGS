@@ -11,7 +11,7 @@ bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
     model.file, debug=FALSE, is.inits, bin, DIC=FALSE,
     useWINE=.Platform$OS.type != "windows", newWINE=TRUE, WINEPATH=NULL, 
     bugs.seed=NULL, summary.only=FALSE, save.history=TRUE, 
-    bugs.data.file, bugs.inits.files)
+    bugs.data.file, bugs.inits.files, over.relax = FALSE)
 }
 \arguments{
   \item{parameters.to.save}{parameters that should be monitored}
@@ -36,6 +36,7 @@ bugs.script(parameters.to.save, n.chains, n.iter, n.burnin, n.thin,
   \item{save.history}{If \code{TRUE} (the default), trace plots are generated at the end.}
   \item{bugs.data.file}{character name of the data file}
   \item{bugs.inits.files}{character vector of names of the inits files}  
+  \item{over.relax}{If \code{TRUE}, over-relaxed form of MCMC is used if available from WinBUGS.}
 }
 
 \value{Nothing, but as a side effect, the script file \file{script.txt}

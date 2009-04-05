@@ -2,7 +2,7 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
   n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
   n.thin = max(1, floor(n.chains *(n.iter - n.burnin) / n.sims)), n.sims = 1000,
   DIC = TRUE, bugs.directory = "c:/Program Files/OpenBUGS/",
-  working.directory=NULL, digits = 5)
+  working.directory=NULL, digits = 5, over.relax = FALSE)
 {
   if(!is.R())
     stop("OpenBUGS is not yet available in S-PLUS")
@@ -78,14 +78,14 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
     cat("Sampling has been started ...\n")
     flush.console()
   }
-  BRugs::modelUpdate(nBurnin)
+  BRugs::modelUpdate(nBurnin, overRelax = over.relax)
   ## BRugs::samplesSetThin(nThin)
   if(DIC) {
     BRugs::dicSet()
     on.exit(BRugs::dicClear(), add = TRUE)
   }
   BRugs::samplesSet(parametersToSave)
-  BRugs::modelUpdate(nIter)
+  BRugs::modelUpdate(nIter, overRelax = over.relax)
   params <- sort.name(BRugs::samplesMonitors("*"), parametersToSave)
   samples <- sapply(params, BRugs::samplesSample)
   n.saved.per.chain <- nrow(samples)/numChains
