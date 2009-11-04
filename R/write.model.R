@@ -1,8 +1,11 @@
 write.model <- function(model, con = "model.bug")
 {
   if (is.R()){
-    model.text <- attr(model, "source")
-    model.text <- sub("^\\s*function\\s*\\(\\s*\\)", "model", model.text)
+    #model.text <- attr(model, "source")
+    #model.text <- sub("^\\s*function\\s*\\(\\s*\\)", "model", model.text)
+    model.text <- c("model", deparse(body(model)))
+    model.text <- gsub(" ([[:digit:]\\.]*)e([+-][[:digit:]]{1,3}) ", " \\1E\\2 ", model.text)
+    model.text <- gsub(" ([[:digit:]]*)(E[+-][[:digit:]]{1,3}) ", " \\1\\.0\\2 ", model.text)    
   } else {
     ## In S-PLUS the source code of a function can be obtained with
     ## as.character(function_name).  This omits the "function_name <- function()" piece

@@ -12,6 +12,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
     save.history=!summary.only, over.relax = FALSE)
 {
   if(!is.null(working.directory)) {
+    working.directory <- path.expand(working.directory)
     savedWD <- getwd()
     setwd(working.directory)
     on.exit(setwd(savedWD))
@@ -26,7 +27,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
     ## If OpenBUGS, we only call openbugs() and exit...
     return(openbugs(data, inits, parameters.to.save, model.file,
                     n.chains, n.iter, n.burnin, n.thin, n.sims, DIC=DIC,
-                    bugs.directory, working.directory, digits, over.relax = over.relax))
+                    bugs.directory, working.directory, digits, over.relax = over.relax, seed=bugs.seed))
   }
   ## Checking number of inits, which is NOT saved here:
   if(!missing(inits) && !is.function(inits) && !is.null(inits) && (length(inits) != n.chains))

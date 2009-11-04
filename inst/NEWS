@@ -1,6 +1,13 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-15
+- added seed argument to openbugs()
+- fix write.model() to work for separatly specified function body
+- fix write.model() to make larger numeric (particularly integer) values 
+  in scientific notation work
+- fix bugs.update.settings() for R>=2.10.0 compatibility
+
 Update 2.1-14
 - new argument over.relax=FALSE
 

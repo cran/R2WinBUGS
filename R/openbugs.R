@@ -2,7 +2,7 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
   n.chains = 3, n.iter = 2000, n.burnin = floor(n.iter/2),
   n.thin = max(1, floor(n.chains *(n.iter - n.burnin) / n.sims)), n.sims = 1000,
   DIC = TRUE, bugs.directory = "c:/Program Files/OpenBUGS/",
-  working.directory=NULL, digits = 5, over.relax = FALSE)
+  working.directory=NULL, digits = 5, over.relax = FALSE, seed=NULL)
 {
   if(!is.R())
     stop("OpenBUGS is not yet available in S-PLUS")
@@ -49,6 +49,7 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
     try(file.copy(file.path(savedWD, data), data, overwrite = TRUE))
   BRugs::modelData(data)
   BRugs::modelCompile(numChains)
+  if(!is.null(seed)) BRugs::modelSetSeed(newSeed=seed)
   if(missing(inits) || is.null(inits)) {
     BRugs::modelGenInits()
   } else {

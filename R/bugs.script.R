@@ -14,7 +14,7 @@
 
   model <- 
     if (length(grep("\\\\", model.file)) || length(grep("/", model.file))) {
-        model.file
+        gsub("\\\\", "/", model.file)
     }
     else file.path(working.directory, model.file)
   model <- native2win(model, useWINE=useWINE, newWINE=newWINE, WINEPATH=WINEPATH)

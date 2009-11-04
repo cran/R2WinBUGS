@@ -13,7 +13,7 @@ openbugs(data, inits, parameters.to.save,
     n.thin = max(1, floor(n.chains * (n.iter - n.burnin) / n.sims)),
     n.sims = 1000,  DIC = TRUE, 
     bugs.directory = "c:/Program Files/OpenBUGS/",
-    working.directory = NULL, digits = 5, over.relax = FALSE)
+    working.directory = NULL, digits = 5, over.relax = FALSE, seed=NULL)
 }
 
 \arguments{
@@ -58,6 +58,7 @@ openbugs(data, inits, parameters.to.save,
     directory; if \code{NULL}, a temporary working directory via
     \code{\link{tempdir}} is used.}
   \item{over.relax}{If \code{TRUE}, over-relaxed form of MCMC is used if available from OpenBUGS.}
+  \item{seed}{random seed (default is no seed)}
 }
 
 \value{A \code{\link{bugs}} object.}
