@@ -67,7 +67,7 @@ function(data, inits, parameters.to.save, model.file="model.bug",
         } else {
                gsub("\\.tmp$", ".txt", temp)
         }
-      write.model(model.file, con=temp)
+      write.model(model.file, con=temp, digits=digits)
       model.file <- gsub("\\\\", "/", temp)
       if(!is.R()) on.exit(file.remove(model.file), add=TRUE)
   }

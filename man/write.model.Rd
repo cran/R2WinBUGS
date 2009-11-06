@@ -3,7 +3,7 @@
 \title{Creating a WinBUGS model file}
 \description{Convert \R / S-PLUS function to a \pkg{WinBUGS} model file}
 \usage{
-write.model(model, con = "model.bug")
+write.model(model, con = "model.bug", digits = 5)
 }
 
 \arguments{
@@ -11,13 +11,15 @@ write.model(model, con = "model.bug")
     model language, for minor differences see Section Details.}
   \item{con}{passed to \code{\link{writeLines}} which actually writes
     the model file}
+  \item{digits}{number of significant digits used for \pkg{WinBUGS}
+    input, see \code{\link{formatC}}}
 }
 
 \value{Nothing, but as a side effect, the model file is written}
 
 \details{
 
-BUGS models follow closely S syntax. It is teherfore possible to write
+BUGS models follow closely S syntax. It is therefore possible to write
 most BUGS models as \R functions.
 
 As a difference, BUGS syntax allows truncation specification like this:

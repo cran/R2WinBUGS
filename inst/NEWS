@@ -1,6 +1,9 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-16
+- fix write.model() again by going throught parse tree now
+
 Update 2.1-15
 - added seed argument to openbugs()
 - fix write.model() to work for separatly specified function body
