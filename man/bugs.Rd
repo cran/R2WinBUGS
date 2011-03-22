@@ -23,7 +23,7 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
 \arguments{
   \item{data}{either a named list (names corresponding to variable names
     in the \code{model.file}) of the data for the \pkg{WinBUGS} model,
-    \emph{or} a vector or list of the names of the data objects used by
+    \emph{or} (which is not recommended and unsafe) a vector or list of the names of the data objects used by
     the model. If \code{data} is a one element character vector (such as \code{"data.txt"}), 
     it is assumed that data have already been written to the working directory into that file, 
     e.g. by the function \code{\link{bugs.data}}.}
@@ -229,7 +229,7 @@ schools
 J <- nrow(schools)
 y <- schools$estimate
 sigma.y <- schools$sd
-data <- list ("J", "y", "sigma.y")
+data <- list(J=J, y=y, sigma.y=sigma.y)
 inits <- function(){
     list(theta=rnorm(J, 0, 100), mu.theta=rnorm(1, 0, 100),
          sigma.theta=runif(1, 0, 100))

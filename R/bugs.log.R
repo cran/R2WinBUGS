@@ -8,7 +8,7 @@ bugs.log <- function (file)
 
   if(!file.exists(file))
     stop("Log file", file, "does not exist")
-  log.txt <- readLines(file)
+  log.txt <- readLines(file, warn=FALSE)
   extract <- function (m, line.match, skip=0, empty.left.col=TRUE) {
     start <- (skip + which(m == line.match)[1])
     if(is.na(start)) return(NA)

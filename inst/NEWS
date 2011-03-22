@@ -1,13 +1,16 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-17
+- fix as.bugs.array as reported by S. McKay Curtis
+
 Update 2.1-16
 - fix write.model() again by going throught parse tree now
 
 Update 2.1-15
 - added seed argument to openbugs()
 - fix write.model() to work for separatly specified function body
-- fix write.model() to make larger numeric (particularly integer) values 
+- fix write.model() to make larger numeric (particularly integer) values
   in scientific notation work
 - fix bugs.update.settings() for R>=2.10.0 compatibility
 
@@ -25,13 +28,13 @@ Update 2.1-12
 - bugfix: plot.bugs() did not reset par(mfrow)
 - bugfix: adaptive phase stuff cannot read from files anymore by openbugs(),
           feature has been removed
-- openbugs now displays messages before starting the sampling 
+- openbugs now displays messages before starting the sampling
   (essentially using flush.console())
 
 
 Update 2.1-11
-- bugfix: if working.directory was unset and files are assumed to be in R's 
-  former wd, these are copied to the tempdir that is set as new working 
+- bugfix: if working.directory was unset and files are assumed to be in R's
+  former wd, these are copied to the tempdir that is set as new working
   directory now.
 
 Update 2.1-10

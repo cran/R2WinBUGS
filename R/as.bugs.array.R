@@ -52,10 +52,11 @@ as.bugs.array <- function(sims.array, model.file=NULL, program=NULL,
         n.indexes.short[[j]][k] <- length(unique(unlist(lapply(indexes.long[long.short[[j]]], .subset, k))))
       }
       length.short[j] <- prod(n.indexes.short[[j]])
-      if (length(long.short[[j]]) != length.short[j]){
-        stop(paste("error in parameter", root.short[[j]],
-          "in parameters.to.save"))
-      }
+### bug reported by S. McKay Curtis on February 22, 2010, we cannot check that safely:
+##      if (length(long.short[[j]]) != length.short[j]){
+##        stop(paste("error in parameter", root.short[[j]],
+##          "in parameters.to.save"))
+##      }
       indexes.short[[j]] <- as.list(numeric(length.short[j]))
       for (k in 1:length.short[j]){
         indexes.short[[j]][[k]] <- indexes.long[[long.short[[j]][k]]]
