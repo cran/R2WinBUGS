@@ -2,10 +2,10 @@ citHeader("To cite R2WinBUGS in publications use:")
 
 citEntry(entry       = "article",
 	title        = "R2WinBUGS: A Package for Running WinBUGS from R",
-	author       = personList(
-			person(first="Sibylle", last="Sturtz", email="sturtz@statistik.tu-dortmund.de"),
-			person(first="Uwe", last="Ligges", email="Uwe.Ligges@R-project.org"),
-			person(first="Andrew", last="Gelman", email="gelman@stat.columbia.edu")),
+	author       = c(
+			person(given="Sibylle", family="Sturtz", email="sturtz@statistik.tu-dortmund.de"),
+			person(given="Uwe", family="Ligges", email="Uwe.Ligges@R-project.org"),
+			person(given="Andrew", family="Gelman", email="gelman@stat.columbia.edu")),
 	journal      = "Journal of Statistical Software",
 	year         = 2005,
 	pages        = "1--16",

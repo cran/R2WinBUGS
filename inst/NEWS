@@ -1,6 +1,13 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-19
+- fix outdated usage: .path.package -> system.file
+- move vignette files around
+
+Update 2.1-18
+- import logit from boot nowadays (seems nobody uses that anyway)
+
 Update 2.1-17
 - fix as.bugs.array as reported by S. McKay Curtis
 

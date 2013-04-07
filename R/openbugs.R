@@ -19,6 +19,7 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
   parametersToSave <- parameters.to.save
 
   ## Move to working drirectory or temporary directory when NULL
+  inTempDir <- FALSE
   if(is.null(working.directory)) {
     working.directory <- tempdir()
     inTempDir <- TRUE

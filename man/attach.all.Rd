@@ -64,7 +64,7 @@
 
 \examples{
 # An example model file is given in:
-model.file <- file.path(.path.package("R2WinBUGS"), "model", "schools.txt")
+model.file <- system.file("model", "schools.txt", package="R2WinBUGS")
 # Some example data (see ?schools for details):
 data(schools)
 J <- nrow(schools)

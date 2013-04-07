@@ -1,4 +1,5 @@
-importFrom(coda, mcmc.list, as.mcmc.list, read.coda)
+importFrom(coda, mcmc, mcmc.list, as.mcmc.list, read.coda)
+importFrom(boot, logit)
 
 export(bugs,
        attach.all,
