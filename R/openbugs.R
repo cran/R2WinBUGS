@@ -6,7 +6,7 @@ openbugs <- function(data, inits, parameters.to.save, model.file="model.txt",
 {
   if(!is.R())
     stop("OpenBUGS is not yet available in S-PLUS")
-  if(!require("BRugs"))
+  if(!requireNamespace("BRugs"))
     stop("BRugs is required")
 
   ## switching from bugs() to BRugsFit() notation

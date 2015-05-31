@@ -63,8 +63,7 @@ openbugs(data, inits, parameters.to.save,
 
 \value{A \code{\link{bugs}} object.}
 
-\author{Andrew Gelman, \email{gelman@stat.columbia.edu},
-  \url{http:/www.stat.columbia.edu/~gelman/bugsR/}; modifications and
+\author{Andrew Gelman, \email{gelman@stat.columbia.edu}; modifications and
   packaged by Sibylle Sturtz, \email{sturtz@statistik.tu-dortmund.de},
   and Uwe Ligges.
 }
