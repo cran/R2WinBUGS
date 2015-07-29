@@ -1,6 +1,10 @@
 Changes to R2WinBUGS:
 =====================
 
+Update 2.1-20/21
+- various URL fixes, DESCRIPTION file updates
+- import from base packages
+
 Update 2.1-19
 - fix outdated usage: .path.package -> system.file
 - move vignette files around

@@ -1,8 +1,8 @@
-4f56e3764c37ede92aa6b30f63ac3c35 *DESCRIPTION
-584481b5931298f1ccf1305d93a95634 *NAMESPACE
+d75069a2856ab8df7f557a398e2b633e *DESCRIPTION
+0d35d369c83a607949c3f46104b3b212 *NAMESPACE
 c6e2fac4bd4c53eee794461c93091017 *R/as.bugs.array.R
 3ed2ae0ca3c719074edd579aac380f2e *R/as.mcmc.list.bugs.R
-d5e5d0661608169ba4b66b02da4d835a *R/attach.all.R
+89fa05a35d5283bfb37519020adf55eb *R/attach.all.R
 3ea242ea6615e0086144d6147dcfddb4 *R/bugs.R
 744a61e1e16f6a4abc3a607decb6361f *R/bugs.data.R
 734dbc69675e28ff2525adbeb182e241 *R/bugs.inits.R
@@ -27,7 +27,7 @@ efd33b6a49c441f37e25ba137cf1dc31 *R/write.datafile.R
 ad4d9e52793d2bf5567c66a1fa5d2b21 *build/vignette.rds
 aae2a47d3a16dfaa2d6289c288570a2f *data/schools.txt.gz
 331273eda881d763bc5db965f5ad90d7 *inst/CITATION
-a5329d41b8fdaf8b6501881588696a8a *inst/NEWS
+28b5bb68e5dd293eb1013ebec4b763b5 *inst/NEWS
 932cd365a4fd5b1552dcb7e987053d84 *inst/doc/R2WinBUGS.Rnw
 d8bd90351ae9a3eaaa8c8f7413d43a31 *inst/doc/R2WinBUGS.pdf
 d0fcdd40339f64611177e97cdfb04ca4 *inst/model/schools.txt
