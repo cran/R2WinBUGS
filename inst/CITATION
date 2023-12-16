@@ -1,6 +1,4 @@
-citHeader("To cite R2WinBUGS in publications use:")
-
-citEntry(entry       = "article",
+bibentry(bibtype       = "Article",
 	title        = "R2WinBUGS: A Package for Running WinBUGS from R",
 	author       = c(
 			person(given="Sibylle", family="Sturtz", email="sturtz@statistik.tu-dortmund.de"),
@@ -10,8 +8,8 @@ citEntry(entry       = "article",
 	year         = 2005,
 	pages        = "1--16",
 	number       = 3,
-        volume       = 12,
-	url          = "http://www.jstatsoft.org",
+    volume       = 12,
+	doi          = "10.18637/jss.v012.i03",
 	textVersion  = paste("Sturtz, S., Ligges, U., and Gelman, A. (2005).",
 		"R2WinBUGS: A Package for Running WinBUGS from R.",
 		"Journal of Statistical Software, 12(3), 1-16.")

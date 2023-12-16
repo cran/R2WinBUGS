@@ -128,13 +128,13 @@ bugs(data, inits, parameters.to.save, model.file="model.bug",
   }
 
   BUGS version support:
-  \itemize{
+  \describe{
     \item{\pkg{WinBUGS} 1.4.*}{default}
     \item{\pkg{OpenBUGS} 2.*}{via argument \code{program="OpenBUGS"}}
   }
 
   Operation system support:
-  \itemize{
+  \describe{
     \item{\pkg{MS Windows}}{no problem}
     \item{\pkg{Linux}, \pkg{Mac OS X} and \pkg{Unix} in
       general}{possible with Wine emulation via \code{useWINE=TRUE}, but

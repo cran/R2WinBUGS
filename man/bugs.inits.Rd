@@ -16,7 +16,7 @@ bugs.inits(inits, n.chains, digits,
   \item{n.chains}{number of Markov chains}
   \item{digits}{number of significant digits used for \pkg{WinBUGS}
     input, see \code{\link{formatC}}}
-  \item{inits.file}{name for the inits files R write the inits into.}
+  \item{inits.files}{name for the inits files R write the inits into.}
 }
 
 \value{Vector of names of \code{inits.files}; as a side effect, the inits files \file{inits*.txt}

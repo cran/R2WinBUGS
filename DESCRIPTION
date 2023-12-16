@@ -1,7 +1,7 @@
 Package: R2WinBUGS
 Title: Running 'WinBUGS' and 'OpenBUGS' from 'R' / 'S-PLUS'
-Date: 2015-07-29
-Version: 2.1-21
+Date: 2023-12-14
+Version: 2.1-22
 Author: originally written by Andrew Gelman <gelman@stat.columbia.edu>;
  changes and packaged by Sibylle Sturtz <sturtz@statistik.tu-dortmund.de>
  and Uwe Ligges <ligges@statistik.tu-dortmund.de>.
@@ -19,8 +19,7 @@ SystemRequirements: OpenBugs for functions bugs() and openbugs() or
         WinBUGS 1.4 for function bugs()
 Maintainer: Uwe Ligges <ligges@statistik.tu-dortmund.de>
 License: GPL-2
-Dialect: R, S-PLUS
-Packaged: 2015-07-29 21:06:15 UTC; ligges
 NeedsCompilation: no
+Packaged: 2023-12-16 00:24:10 UTC; ligges
 Repository: CRAN
-Date/Publication: 2015-07-30 00:15:56
+Date/Publication: 2023-12-16 00:50:07 UTC
