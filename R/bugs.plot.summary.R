@@ -1,7 +1,7 @@
 "bugs.plot.summary" <-
 function (sims, ...){
   isDIC <- sims$isDIC
-  
+
   if (.Device=="windows" ||
       (.Device=="null device" && options("device")=="windows")){
     cex.names <- .7
@@ -21,7 +21,7 @@ function (sims, ...){
   sims.array <- sims$sims.array
   n.chains <- sims$n.chains
   n.parameters <- nrow(summ)
- 
+
   J0 <- unlist(lapply(sims$long.short, length))
   if (isDIC) J0 <- J0[1:(length(J0)-1)]  # don't display deviance summaries
   J <- J0
@@ -30,11 +30,7 @@ function (sims, ...){
     J[J==max(J)] <- max(J)-1
     total <- ceiling(sum(J+.5))
   }
-  if (is.R()){
-    pos <- -1
-  } else {
-    pos <- -1.5
-  }
+  pos <- -1
   ypos <- NULL
   id <- NULL
   ystart <- NULL
@@ -44,24 +40,15 @@ function (sims, ...){
   ystart <- numeric(n.roots)
   for (k in 1:n.roots){
     ystart[k] <- pos
-    if (is.R()) {
         ypos <- c(ypos, pos - seq(0, J[k]-1))
-    } else {
-        # In S-PLUS, increase the vertical spacing
-        ypos <- c(ypos, pos - 1.5*seq(0, J[k]-1))
-    }
     id <- c(id, 1:J[k])
-    if (is.R()) {
         pos <- pos - J[k] -.5
-    } else {
-        pos <- pos - 1.5*J[k] -0.75
-    }
     if (k>1) jj <- c(jj, sum(J0[1:(k-1)]) + (1:J[k]))
   }
   if (is.R()){
-    bottom <- min(ypos)-1  
+    bottom <- min(ypos)-1
   } else {
-    bottom <- min(ypos)-1.5  
+    bottom <- min(ypos)-1.5
   }
   med <- numeric(sum(J))
   i80 <- matrix( , sum(J), 2)
@@ -76,10 +63,10 @@ function (sims, ...){
   p.rng <- pretty(rng, n = 2)
   b <- 2 / (max(p.rng) - min(p.rng))
   a <- -b * p.rng[1]
-  
+
   par (mar=c(0,0,1,3))
   # if in Splus, suppress printing of warnings during the plotting.
-  # otherwise a warning is generated 
+  # otherwise a warning is generated
   if (!is.R()){
     warn.settings <- options("warn")[[1]]
     options (warn = -1)
@@ -97,7 +84,7 @@ function (sims, ...){
   a <- A + B*a
   text (A+B*1, 2.5, "80% interval for each chain", cex=cex.top)
   lines (A+B*c(0,2), c(0,0))
-  lines (A+B*c(0,2), rep(bottom,2))  
+  lines (A+B*c(0,2), rep(bottom,2))
   if(n.chains > 1){
     text (A+B*3, 2.6, "R-hat", cex=cex.top)
     lines (A+B*c(2.5,3.5), c(0,0))
@@ -108,7 +95,7 @@ function (sims, ...){
 #
   if (min(p.rng)<0 & max(p.rng)>0)
     lines (rep(a,2), c(0,bottom), lwd=.5, col="gray")
-      
+
   for (x in p.rng){
     text (a+b*x, 1, x, cex=cex.names)
     lines (rep(a+b*x,2), c(0,-.2))
@@ -146,7 +133,7 @@ function (sims, ...){
       if (interval[2]-interval[1] < min.width)
         interval <- mean(interval) + c(-1,1)*min.width/2
       lines (interval, rep(ypos[j]-.1*(m-(n.chains+1)/2),2), lwd=1, col=m+1)
-      if(n.chains > 1) 
+      if(n.chains > 1)
         points (A+B*(1.5 + min(max(summ[jj[j],"Rhat"],1),2)), ypos[j], pch=20, cex=cex.points)
     }
   }

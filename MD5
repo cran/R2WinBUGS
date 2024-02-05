@@ -1,5 +1,6 @@
-72453c91ca5ea693f6b094ff92dcf21d *DESCRIPTION
+958e6e4c0ebbb22dbca8dbafa90e2234 *DESCRIPTION
 0d35d369c83a607949c3f46104b3b212 *NAMESPACE
+de00e8dd7bfec0ed741089377ef2ab7f *R/00.R
 c6e2fac4bd4c53eee794461c93091017 *R/as.bugs.array.R
 3ed2ae0ca3c719074edd579aac380f2e *R/as.mcmc.list.bugs.R
 fd453485ea604c89d996c6f72319b874 *R/attach.all.R
@@ -8,7 +9,7 @@ fd453485ea604c89d996c6f72319b874 *R/attach.all.R
 734dbc69675e28ff2525adbeb182e241 *R/bugs.inits.R
 05a58f27092d6fa061d191f48e9ddb8a *R/bugs.log.R
 84f77779fa59f29888f5cb35ee39e6cd *R/bugs.plot.inferences.R
-137293ac0cffce6e72c7ce8f123d7d91 *R/bugs.plot.summary.R
+48f2e71dba89f71b8179199f028762dd *R/bugs.plot.summary.R
 a2ec231e8b599f4c60f89c8ad3dfc1db *R/bugs.run.R
 5ac5018e740bdb4fb4cc9790ded5d91e *R/bugs.script.R
 9988f84844c8a6bc52f4b498d80fee8b *R/bugs.sims.R
@@ -51,7 +52,7 @@ cd123d6291d4840168e619618a14b9b0 *man/print.bugs.Rd
 943bc0d920165718ab2b74712e806e87 *man/read.bugs.Rd
 cf2b71f734e9b2349bf57222488c8aa8 *man/schools.Rd
 37cb00fc1c0b63961bc57126834b9593 *man/write.datafile.Rd
-d8b7bba9b5adf245af3c06890f86e13b *man/write.model.Rd
+d8648ef06e935afdbc94e350b4e415ab *man/write.model.Rd
 932cd365a4fd5b1552dcb7e987053d84 *vignettes/R2WinBUGS.Rnw
 3e028eeff9a3f50fed9739e8fdc093f0 *vignettes/RdRW.sty
 9a22dbf5a0c7104c43e0cbf622e46a64 *vignettes/Z.cls

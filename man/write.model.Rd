@@ -49,13 +49,9 @@ schoolsmodel <- function(){
     sigma.theta ~ dunif (0, 1000)
 }
 
-if (is.R()){ # for R
-    ## some temporary filename:
-    filename <- file.path(tempdir(), "schoolsmodel.bug")
-} else{ # for S-PLUS
-     ## put the file in the working directory:
-     filename <- "schoolsmodel.bug"
-}
+## some temporary filename:
+filename <- file.path(tempdir(), "schoolsmodel.bug")
+
 
 ## write model file:
 write.model(schoolsmodel, filename)
